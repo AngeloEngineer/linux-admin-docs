@@ -1,0 +1,1904 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GNU/Linux — Administration Système</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ========== SIDEBAR ========== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h1 class="sidebar-title">🐧 GNU/Linux</h1>
+      <p class="sidebar-subtitle">Administration Système</p>
+    </div>
+
+    <div class="sidebar-search">
+      <input type="text" id="searchInput" placeholder="Rechercher..." aria-label="Rechercher dans le cours">
+    </div>
+
+    <nav class="sidebar-nav" id="sidebarNav">
+      <ul class="nav-list">
+        <li class="nav-chapter">
+          <a href="#ch1" class="nav-link ch-link">I. Introduction aux systèmes d'exploitation</a>
+          <ul class="nav-subs">
+            <li><a href="#ch1-s1">I.1 Qu'est-ce qu'un SE?</a></li>
+            <li><a href="#ch1-s2">I.2 Historique GNU/Linux</a></li>
+            <li><a href="#ch1-s3">I.3 Découverte du système</a></li>
+            <li><a href="#ch1-s4">I.4 Commandes de base</a></li>
+          </ul>
+        </li>
+        <li class="nav-chapter">
+          <a href="#ch2" class="nav-link ch-link">II. Gestion des utilisateurs</a>
+          <ul class="nav-subs">
+            <li><a href="#ch2-s1">II.1 Utilisateurs et groupes</a></li>
+            <li><a href="#ch2-s2">II.2 Gestion</a></li>
+          </ul>
+        </li>
+        <li class="nav-chapter">
+          <a href="#ch3" class="nav-link ch-link">III. Gestion des fichiers</a>
+          <ul class="nav-subs">
+            <li><a href="#ch3-s1">III.1 Présentation des répertoires</a></li>
+            <li><a href="#ch3-s2">III.2 Types et permissions</a></li>
+          </ul>
+        </li>
+        <li class="nav-chapter">
+          <a href="#ch4" class="nav-link ch-link">IV. Travail avec les shells</a>
+          <ul class="nav-subs">
+            <li><a href="#ch4-s1">IV.1 Le shell</a></li>
+            <li><a href="#ch4-s2">IV.2 Fichiers de configuration</a></li>
+            <li><a href="#ch4-s3">IV.3 Programmation shell</a></li>
+          </ul>
+        </li>
+        <li class="nav-chapter">
+          <a href="#ch5" class="nav-link ch-link">V. Fonctionnement du système</a>
+          <ul class="nav-subs">
+            <li><a href="#ch5-s1">V.1 Multi-tâches</a></li>
+            <li><a href="#ch5-s2">V.2 Initialisation et arrêt</a></li>
+            <li><a href="#ch5-s3">V.3 Gestion des services</a></li>
+            <li><a href="#ch5-s4">V.4 Gestion des processus</a></li>
+            <li><a href="#ch5-s5">V.5 Ressources systèmes</a></li>
+          </ul>
+        </li>
+        <li class="nav-chapter">
+          <a href="#ch6" class="nav-link ch-link">VI. Éléments de réseau</a>
+          <ul class="nav-subs">
+            <li><a href="#ch6-s1">VI.1 Notions de réseau</a></li>
+            <li><a href="#ch6-s2">VI.4 TCP/IP et adressage</a></li>
+            <li><a href="#ch6-s3">VI.5 Configuration réseau</a></li>
+            <li><a href="#ch6-s4">VI.6 Commandes réseau</a></li>
+            <li><a href="#ch6-s5">VI.7 Services réseau</a></li>
+          </ul>
+        </li>
+        <li class="nav-chapter">
+          <a href="#ch7" class="nav-link ch-link">VII. Gestion des programmes</a>
+          <ul class="nav-subs">
+            <li><a href="#ch7-s1">VII.1 RPM</a></li>
+            <li><a href="#ch7-s2">VII.2 tar et compression</a></li>
+            <li><a href="#ch7-s3">VII.3 Aide en ligne</a></li>
+          </ul>
+        </li>
+        <li class="nav-chapter">
+          <a href="#ch8" class="nav-link ch-link">VIII. Installation de GNU/Linux</a>
+          <ul class="nav-subs">
+            <li><a href="#ch8-s1">VIII.1 Pré-requis</a></li>
+            <li><a href="#ch8-s2">VIII.2 Informations périphériques</a></li>
+            <li><a href="#ch8-s3">VIII.3 Partitionnement</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-progress">
+      <span class="progress-label">Progression</span>
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="progressFill"></div></div>
+      <span class="progress-pct" id="progressPct">0%</span>
+    </div>
+  </aside>
+
+  <!-- ========== OVERLAY (mobile) ========== -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ========== HAMBURGER ========== -->
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+
+  <!-- ========== MAIN ========== -->
+  <main class="main-content" id="mainContent">
+
+    <!-- HERO -->
+    <header class="hero">
+      <h1 class="hero-title">GNU/Linux — Administration Système</h1>
+      <p class="hero-desc">
+        Cours complet d'administration système GNU/Linux — notions fondamentales, gestion des utilisateurs,
+        fichiers, shell, réseau, paquetage et installation.
+      </p>
+      <div class="hero-badges">
+        <span class="badge badge-n1">Niveau 1</span>
+        <span class="badge badge-n2">Niveau 2</span>
+        <span class="badge badge-n3">Niveau 3</span>
+        <span class="badge badge-n4">Niveau 4</span>
+      </div>
+    </header>
+
+    <!-- ================================================================ -->
+    <!-- CHAPITRE I                                                     -->
+    <!-- ================================================================ -->
+    <section class="chapter" id="ch1" data-chapter="1">
+      <div class="ch-header">
+        <h2 class="ch-title">Chapitre I : Introduction aux systèmes d'exploitation</h2>
+        <button class="ch-toggle" aria-label="Toggle chapter" data-target="ch1-body">▼</button>
+      </div>
+
+      <div class="ch-body" id="ch1-body">
+
+        <!-- I.1 -->
+        <article class="section" id="ch1-s1">
+          <h3 class="section-title">I.1 Qu'est-ce qu'un système d'exploitation?</h3>
+
+          <div class="card card-def">
+            <div class="card-label">Définition</div>
+            <p>Un <strong>système d'exploitation</strong> est un ensemble de programmes qui réalise l'interface entre le matériel et l'utilisateur. Il gère l'accès aux ressources (processeur, mémoire, disques) et fournit des services aux applications.</p>
+          </div>
+
+          <div class="card card-key">
+            <div class="card-label">Ce qu'il faut retenir</div>
+            <ul>
+              <li>Le SE est le premier logiciel chargé au démarrage.</li>
+              <li>Il fonctionne en <strong>mode noyau</strong> (kernel mode) avec accès total au matériel.</li>
+              <li>Les applications utilisateur s'exécutent en <strong>mode utilisateur</strong> (user mode) et sollicitent le noyau via des <strong>appels système</strong> (system calls).</li>
+              <li>Exemples d'appels système : <code>open()</code>, <code>read()</code>, <code>write()</code>, <code>fork()</code>, <code>exec()</code>.</li>
+            </ul>
+          </div>
+
+          <div class="priority-box p2">
+            <span class="priority-badge">Niveau 2</span>
+            <p>Le mode noyau est aussi appelé <strong>mode privilégié</strong> (ring 0 sur x86). Un plantage en mode noyau provoque un <strong>kernel panic</strong> et le gel complet du système.</p>
+          </div>
+
+          <p>Les systèmes d'exploitation courants sont : GNU/Linux, Microsoft Windows, macOS, BSD, Solaris. Le SE a pour rôles :</p>
+          <ul>
+            <li><strong>Ordonnancement</strong> des processus et répartition du temps CPU.</li>
+            <li><strong>Gestion de la mémoire</strong> (virtuelle, pagination, swap).</li>
+            <li><strong>Gestion des entrées / sorties</strong> via les pilotes (drivers).</li>
+            <li><strong>Gestion des fichiers</strong> et systèmes de fichiers.</li>
+            <li><strong>Gestion des utilisateurs</strong> et des droits.</li>
+            <li><strong>Réseau</strong> — pile protocolaire et interfaces.</li>
+          </ul>
+
+          <div class="table-wrap">
+            <table class="styled-table">
+              <caption>Comparaison mode noyau / mode utilisateur</caption>
+              <thead><tr><th>Critère</th><th>Mode noyau</th><th>Mode utilisateur</th></tr></thead>
+              <tbody>
+                <tr><td>Privilèges</td><td>Accès complet au matériel</td><td>Accès limité, contrôlé</td></tr>
+                <tr><td>Espace mémoire</td><td>Espace noyau</td><td>Espace utilisateur</td></tr>
+                <tr><td>Appels système</td><td>Les exécute</td><td>Les déclenche</td></tr>
+                <tr><td>Plantage</td><td>Kernel panic</td><td>Processus tué (segfault)</td></tr>
+                <tr><td>Exemples</td><td>Noyau, pilotes</td><td>Navigateur, shell, éditeur</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <!-- I.2 -->
+        <article class="section" id="ch1-s2">
+          <h3 class="section-title">I.2 Historique du système GNU/Linux</h3>
+
+          <div class="timeline">
+            <div class="tl-item"><span class="tl-year">1969</span> — Création d'<strong>UNIX</strong> par Ken Thompson et Dennis Ritchie aux Bell Labs (AT&amp;T).</div>
+            <div class="tl-item"><span class="tl-year">1973</span> — UNIX réécrit en langage C, ce qui le rend portable.</div>
+            <div class="tl-item"><span class="tl-year">1983</span> — Richard Stallman lance le projet <strong>GNU</strong> (GNU's Not UNIX) pour créer un système d'exploitation libre.</div>
+            <div class="tl-item"><span class="tl-year">1987</span> — Andrew Tanenbaum crée <strong>MINIX</strong>, un UNIX pédagogique.</div>
+            <div class="tl-item"><span class="tl-year">1991</span> — Linus Torvalds, étudiant finlandais, annonce le noyau <strong>Linux</strong> (version 0.01).</div>
+            <div class="tl-item"><span class="tl-year">1992</span> — Linux est distribué sous licence <strong>GPL</strong>, formant officiellement <strong>GNU/Linux</strong>.</div>
+            <div class="tl-item"><span class="tl-year">1993</span> — Création de <strong>Debian</strong> (Ian Murdock) et <strong>Slackware</strong> (Patrick Volkerding).</div>
+            <div class="tl-item"><span class="tl-year">1994</span> — Sortie de Red Hat Linux (version 1.0).</div>
+            <div class="tl-item"><span class="tl-year">1996</span> — Création de <strong>S.u.S.E.</strong> (Allemagne).</div>
+            <div class="tl-item"><span class="tl-year">1998</span> — Création de <strong>Mandrake</strong> (basé sur Red Hat).</div>
+            <div class="tl-item"><span class="tl-year">2004</span> — Première version d'<strong>Ubuntu</strong> (basée sur Debian).</div>
+          </div>
+
+          <div class="card card-tip">
+            <div class="card-label">Astuce</div>
+            <p>La mascotte de Linux est le <strong>manchot Tux</strong>, dessiné par Larry Ewing en 1996.</p>
+          </div>
+
+          <h4>Distributions GNU/Linux</h4>
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Distribution</th><th>Base</th><th>Format paquets</th><th>Particularité</th></tr></thead>
+              <tbody>
+                <tr><td>Slackware</td><td>—</td><td>.tgz</td><td>Une des plus anciennes</td></tr>
+                <tr><td>Debian</td><td>—</td><td>.deb</td><td>Stable, communautaire</td></tr>
+                <tr><td>Red Hat</td><td>—</td><td>.rpm</td><td>Entreprise (RHEL), Fedora</td></tr>
+                <tr><td>S.u.S.E.</td><td>Slackware</td><td>.rpm</td><td>Allemande, YaST</td></tr>
+                <tr><td>Mandrake</td><td>Red Hat</td><td>.rpm</td><td>Devenue Mandriva</td></tr>
+                <tr><td>Caldera</td><td>—</td><td>.rpm</td><td>Disparue</td></tr>
+                <tr><td>Ubuntu</td><td>Debian</td><td>.deb</td><td>Grand public, dérivée Debian</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <!-- I.3 -->
+        <article class="section" id="ch1-s3">
+          <h3 class="section-title">I.3 Découverte du système</h3>
+
+          <div class="card card-def">
+            <div class="card-label">Définition</div>
+            <p>Le <strong>noyau UNIX</strong> (ou kernel) est le cœur du système d'exploitation. Il assure les fonctions élémentaires : gestion des processus, de la mémoire, des pilotes, des appels système et du système de fichiers.</p>
+          </div>
+
+          <p>Architecture générale d'un système GNU/Linux :</p>
+          <ol>
+            <li><strong>Matériel</strong> (CPU, RAM, disques, périphériques).</li>
+            <li><strong>Noyau</strong> (kernel) — interface avec le matériel.</li>
+            <li><strong>Bibliothèques système</strong> (libc, glibc).</li>
+            <li><strong>Utilitaires</strong> (GNU Coreutils : ls, cp, mv, cat…).</li>
+            <li><strong>Shell</strong> (bash, zsh, sh).</li>
+            <li><strong>Applications</strong> utilisateur (GUI, serveurs, etc.).</li>
+          </ol>
+
+          <div class="card card-key">
+            <div class="card-label">Ce qu'il faut retenir</div>
+            <p>Le noyau Linux est <strong>monolithique</strong> (contient pilotes, systèmes de fichiers, protocoles réseaux) mais supporte les <strong>modules</strong> chargeables dynamiquement (<code>lsmod</code>, <code>modprobe</code>).</p>
+          </div>
+        </article>
+
+        <!-- I.4 -->
+        <article class="section" id="ch1-s4">
+          <h3 class="section-title">I.4 Interprètes de commandes et commandes de base</h3>
+
+          <div class="card card-def">
+            <div class="card-label">Définition</div>
+            <p>Un <strong>interprète de commandes</strong> (shell) est un programme qui lit les commandes tapées par l'utilisateur et les exécute. L'invite (<code>prompt</code>) affiche typiquement <code>user@host:~$</code> ou <code>#</code> pour root.</p>
+          </div>
+
+          <div class="priority-box p1">
+            <span class="priority-badge">Niveau 1</span>
+            <p>Ces commandes sont essentielles et doivent être maîtrisées dès les premières heures.</p>
+          </div>
+
+          <h4>Commandes de base</h4>
+
+          <div class="cmd-card" data-cmd="ls">
+            <div class="cmd-header"><code class="cmd-name">ls</code><button class="cmd-copy" data-cmd="ls [options] [chemin]">Copier</button></div>
+            <div class="cmd-body">
+              <p>Liste le contenu d'un répertoire.</p>
+              <pre><code>ls                  # liste simple
+ls -l               # format long (permissions, taille, date)
+ls -a               # montre les fichiers cachés (.xxx)
+ls -la              # combiné
+ls -R               # récursif
+ls -lh              # tailles lisibles (K, M, G)
+ls -lS              # trié par taille
+ls -lt              # trié par date
+ls *.txt            # filtre par motif</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="more, cat">
+            <div class="cmd-header"><code class="cmd-name">more</code><button class="cmd-copy" data-cmd="more [fichier]">Copier</button></div>
+            <div class="cmd-body">
+              <p>Affiche un fichier page par page. Espace pour下一页, q pour quitter.</p>
+              <pre><code>more /var/log/syslog</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="cat">
+            <div class="cmd-header"><code class="cmd-name">cat</code><button class="cmd-copy" data-cmd="cat [fichier...]">Copier</button></div>
+            <div class="cmd-body">
+              <p>Affiche le contenu d'un fichier (ou concatène plusieurs fichiers) sur la sortie standard.</p>
+              <pre><code>cat fichier
+cat f1 f2 &gt; f3      # concatène f1 et f2 dans f3
+cat &gt; f &lt;&lt; EOF      # écrit jusqu'à EOF</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="cp">
+            <div class="cmd-header"><code class="cmd-name">cp</code><button class="cmd-copy" data-cmd="cp [options] source dest">Copier</button></div>
+            <div class="cmd-body">
+              <p>Copie des fichiers ou répertoires.</p>
+              <pre><code>cp fichier dossier/
+cp fichier1 fichier2  # copie vers un nouveau nom
+cp -r dossier/ backup/  # récursif
+cp -i source dest     # demande confirmation avant écrasement
+cp -p source dest     # conserve permissions et dates
+cp -a source dest     # archive (préserve tout)</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="mv">
+            <div class="cmd-header"><code class="cmd-name">mv</code><button class="cmd-copy" data-cmd="mv [options] source dest">Copier</button></div>
+            <div class="cmd-body">
+              <p>Déplace ou renomme fichiers et répertoires.</p>
+              <pre><code>mv fichier dossier/
+mv ancien nouveau     # renomme
+mv -i source dest     # demande confirmation</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="rm">
+            <div class="cmd-header"><code class="cmd-name">rm</code><button class="cmd-copy" data-cmd="rm [options] fichier">Copier</button></div>
+            <div class="cmd-body">
+              <p>Supprime des fichiers ou répertoires.</p>
+              <pre><code>rm fichier
+rm -r dossier/        # récursif
+rm -f fichier         # force sans confirmation
+rm -rf dossier/       # supprime récursivement et force</code></pre>
+            </div>
+            <div class="card card-piege">
+              <div class="card-label">Piège !</div>
+              <p><code>rm -rf /</code> supprime tout le système ! Vérifiez toujours le répertoire courant avant une suppression récursive.</p>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="find">
+            <div class="cmd-header"><code class="cmd-name">find</code><button class="cmd-copy" data-cmd="find [chemin] [critères]">Copier</button></div>
+            <div class="cmd-body">
+              <p>Recherche des fichiers selon divers critères.</p>
+              <pre><code>find / -name "*.txt"            # par nom
+find . -type f -size +1M        # fichiers &gt; 1 Mo
+find . -mtime -7                # modifié depuis moins de 7 jours
+find . -exec rm {} \;           # exécute une commande sur chaque résultat
+find . -name "*.log" -delete    # supprime les fichiers .log</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="grep">
+            <div class="cmd-header"><code class="cmd-name">grep</code><button class="cmd-copy" data-cmd="grep [options] motif [fichier]">Copier</button></div>
+            <div class="cmd-body">
+              <p>Recherche un motif dans un fichier (ou l'entrée standard).</p>
+              <pre><code>grep "motif" fichier
+grep -i "motif" fichier        # insensible à la casse
+grep -r "motif" dossier/       # récursif
+grep -v "motif" fichier        # inverse (lignes ne contenant PAS le motif)
+grep -c "motif" fichier        # compte les occurrences
+grep -E "regex"                # expressions régulières étendues</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="cd, mkdir, rmdir, pwd, clear">
+            <div class="cmd-header"><code class="cmd-name">cd · mkdir · rmdir · pwd · clear</code><button class="cmd-copy" data-cmd="cd /chemin">Copier</button></div>
+            <div class="cmd-body">
+              <pre><code>cd /etc                # change de répertoire
+cd ~                   # va dans le home
+cd -                   # va dans le précédent répertoire
+mkdir dossier          # crée un répertoire
+mkdir -p a/b/c         # crée l'arborescence
+rmdir dossier          # supprime un répertoire VIDE
+pwd                    # affiche le répertoire courant
+clear                  # efface le terminal</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="df">
+            <div class="cmd-header"><code class="cmd-name">df</code><button class="cmd-copy" data-cmd="df [options]">Copier</button></div>
+            <div class="cmd-body">
+              <p>Affiche l'espace disque utilisé/libre par partition.</p>
+              <pre><code>df -h              # tailles lisibles
+df -T              # montre le type de système de fichiers
+df -i              # affiche les inodes</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="gzip, gunzip">
+            <div class="cmd-header"><code class="cmd-name">gzip · gunzip</code><button class="cmd-copy" data-cmd="gzip [fichier]">Copier</button></div>
+            <div class="cmd-body">
+              <p>Compresse / décompresse un fichier (format .gz).</p>
+              <pre><code>gzip fichier             # crée fichier.gz
+gunzip fichier.gz        # décompresse
+gzip -d fichier.gz       # idem
+zcat fichier.gz          # lit sans décompresser</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="kill">
+            <div class="cmd-header"><code class="cmd-name">kill</code><button class="cmd-copy" data-cmd="kill [signal] PID">Copier</button></div>
+            <div class="cmd-body">
+              <p>Envoie un signal à un processus.</p>
+              <pre><code>kill 1234              # SIGTERM (15) — demande d'arrêt
+kill -9 1234           # SIGKILL — force l'arrêt
+kill -l                # liste des signaux</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="diff">
+            <div class="cmd-header"><code class="cmd-name">diff</code><button class="cmd-copy" data-cmd="diff [options] f1 f2">Copier</button></div>
+            <div class="cmd-body">
+              <p>Compare deux fichiers ligne à ligne.</p>
+              <pre><code>diff f1 f2
+diff -u f1 f2          # format unifié
+diff -r d1 d2          # compare récursivement deux dossiers
+diff -q f1 f2          # signale seulement si différents</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="tar">
+            <div class="cmd-header"><code class="cmd-name">tar</code><button class="cmd-copy" data-cmd="tar [options] [archive] [fichiers]">Copier</button></div>
+            <div class="cmd-body">
+              <p>Crée et manipule des archives.</p>
+              <pre><code>tar -cvf archive.tar dossier/   # crée une archive
+tar -xvf archive.tar            # extrait
+tar -tvf archive.tar            # liste le contenu
+tar -czvf archive.tar.gz dir/   # crée et compresse avec gzip
+tar -xzvf archive.tar.gz        # extrait une archive gzip</code></pre>
+            </div>
+          </div>
+
+          <div class="card card-key">
+            <div class="card-label">Ce qu'il faut retenir</div>
+            <ul>
+              <li><code>ls</code>, <code>cd</code>, <code>pwd</code>, <code>cp</code>, <code>mv</code>, <code>rm</code> sont les commandes de base de manipulation de fichiers.</li>
+              <li><code>grep</code> et <code>find</code> sont les outils de recherche puissants.</li>
+              <li><code>tar</code> et <code>gzip</code> sont les archives/compression historiques.</li>
+            </ul>
+          </div>
+        </article>
+
+      </div><!-- end ch-body -->
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- CHAPITRE II                                                    -->
+    <!-- ================================================================ -->
+    <section class="chapter" id="ch2" data-chapter="2">
+      <div class="ch-header">
+        <h2 class="ch-title">Chapitre II : Gestion des utilisateurs</h2>
+        <button class="ch-toggle" aria-label="Toggle chapter" data-target="ch2-body">▼</button>
+      </div>
+
+      <div class="ch-body" id="ch2-body">
+
+        <article class="section" id="ch2-s1">
+          <h3 class="section-title">II.1 Notion d'utilisateurs et de groupes</h3>
+
+          <div class="card card-def">
+            <div class="card-label">Définition</div>
+            <p>Un <strong>utilisateur</strong> est une entité identifiée par un <strong>login</strong> et un <strong>UID</strong> (User ID). Chaque utilisateur appartient à un <strong>groupe primaire</strong> (GID) et peut appartenir à plusieurs <strong>groupes secondaires</strong>.</p>
+          </div>
+
+          <div class="priority-box p1">
+            <span class="priority-badge">Niveau 1</span>
+            <p>La sécurité du système repose sur la séparation des droits des utilisateurs.</p>
+          </div>
+
+          <h4>Fichier /etc/passwd</h4>
+          <p>Stocke les comptes utilisateurs — <strong>7 champs</strong> séparés par <code>:</code> :</p>
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>#</th><th>Champ</th><th>Exemple</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>login</td><td><code>alice</code></td><td>Nom d'utilisateur</td></tr>
+                <tr><td>2</td><td>mot de passe</td><td><code>x</code></td><td><code>x</code> = crypté dans /etc/shadow</td></tr>
+                <tr><td>3</td><td>UID</td><td><code>1000</code></td><td>Identifiant numérique</td></tr>
+                <tr><td>4</td><td>GID</td><td><code>1000</code></td><td>Groupe primaire</td></tr>
+                <tr><td>5</td><td>commentaire</td><td><code>Alice,,,</code></td><td>GECOS (nom complet, bureau, etc.)</td></tr>
+                <tr><td>6</td><td>home</td><td><code>/home/alice</code></td><td>Répertoire personnel</td></tr>
+                <tr><td>7</td><td>shell</td><td><code>/bin/bash</code></td><td>Interpréteur de connexion</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-block">
+            <div class="code-hdr"><span>/etc/passwd — exemple</span><button class="cmd-copy" data-cmd="cat /etc/passwd">Copier</button></div>
+            <pre><code>root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+alice:x:1000:1000:Alice,,,:/home/alice:/bin/bash
+bob:x:1001:1001:Bob:/home/bob:/bin/zsh</code></pre>
+          </div>
+
+          <h4>Fichier /etc/group</h4>
+          <p><strong>4 champs</strong> : <code>nom:motdepasse:GID:liste_membres</code></p>
+          <div class="code-block">
+            <div class="code-hdr"><span>/etc/group — exemple</span><button class="cmd-copy" data-cmd="cat /etc/group">Copier</button></div>
+            <pre><code>root:x:0:
+users:x:100:alice,bob
+sudo:x:27:alice</code></pre>
+          </div>
+
+          <h4>Fichier /etc/shadow</h4>
+          <p>Contient les mots de passe <strong>cryptés</strong> (hash sha512) et les informations de vieillissement. Accessible uniquement par root.</p>
+          <div class="code-block">
+            <div class="code-hdr"><span>/etc/shadow — exemple</span><button class="cmd-copy" data-cmd="cat /etc/shadow">Copier</button></div>
+            <pre><code>root:$6$xyz...:19100:0:99999:7:::
+alice:$6$abc...:19102:0:99999:7:::</code></pre>
+          </div>
+        </article>
+
+        <article class="section" id="ch2-s2">
+          <h3 class="section-title">II.2 Gestion des utilisateurs et groupes</h3>
+
+          <div class="priority-box p1">
+            <span class="priority-badge">Niveau 1</span>
+            <p>Toutes ces commandes nécessitent les privilèges <strong>root</strong> (via <code>sudo</code> ou en étant connecté en root).</p>
+          </div>
+
+          <h4>Commandes de gestion des utilisateurs</h4>
+
+          <div class="cmd-card" data-cmd="useradd">
+            <div class="cmd-header"><code class="cmd-name">useradd</code><button class="cmd-copy" data-cmd="useradd [options] login">Copier</button></div>
+            <div class="cmd-body">
+              <p>Crée un nouvel utilisateur.</p>
+              <div class="table-wrap">
+                <table class="styled-table">
+                  <thead><tr><th>Option</th><th>Description</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>-u UID</code></td><td>UID spécifique</td></tr>
+                    <tr><td><code>-g GID</code></td><td>Groupe primaire</td></tr>
+                    <tr><td><code>-G groupes</code></td><td>Groupes secondaires (séparés par ,)</td></tr>
+                    <tr><td><code>-s shell</code></td><td>Shell de connexion</td></tr>
+                    <tr><td><code>-c commentaire</code></td><td>Commentaire GECOS</td></tr>
+                    <tr><td><code>-d home</code></td><td>Répertoire personnel</td></tr>
+                    <tr><td><code>-e date</code></td><td>Date d'expiration (YYYY-MM-DD)</td></tr>
+                    <tr><td><code>-m</code></td><td>Crée le répertoire home</td></tr>
+                    <tr><td><code>-k squelette</code></td><td>Répertoire squelette (avec -m)</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <pre><code>useradd -u 1050 -g users -G sudo,admin -s /bin/bash -c "Alice" -m alice
+useradd -D                  # affiche les valeurs par défaut
+useradd -D -s /bin/zsh      # modifie le shell par défaut</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="usermod">
+            <div class="cmd-header"><code class="cmd-name">usermod</code><button class="cmd-copy" data-cmd="usermod [options] login">Copier</button></div>
+            <div class="cmd-body">
+              <p>Modifie un compte utilisateur existant.</p>
+              <pre><code>usermod -s /bin/zsh alice          # change le shell
+usermod -aG sudo alice             # ajoute au groupe sudo (sans retirer)
+usermod -L alice                   # verrouille le compte
+usermod -U alice                   # déverrouille
+usermod -l nouveau_nom alice       # change le login</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="userdel">
+            <div class="cmd-header"><code class="cmd-name">userdel</code><button class="cmd-copy" data-cmd="userdel [options] login">Copier</button></div>
+            <div class="cmd-body">
+              <p>Supprime un utilisateur.</p>
+              <pre><code>userdel alice           # supprime le compte
+userdel -r alice        # supprime aussi le répertoire home et la spool mail</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="groupadd, groupmod, groupdel">
+            <div class="cmd-header"><code class="cmd-name">groupadd · groupmod · groupdel</code><button class="cmd-copy" data-cmd="groupadd [options] groupe">Copier</button></div>
+            <div class="cmd-body">
+              <pre><code>groupadd -g 1050 projet       # crée un groupe avec GID spécifique
+groupmod -n nouveau ancien    # renomme un groupe
+groupdel projet               # supprime un groupe</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="passwd">
+            <div class="cmd-header"><code class="cmd-name">passwd</code><button class="cmd-copy" data-cmd="passwd [options] [login]">Copier</button></div>
+            <div class="cmd-body">
+              <p>Change le mot de passe d'un utilisateur.</p>
+              <div class="table-wrap">
+                <table class="styled-table">
+                  <thead><tr><th>Option</th><th>Description</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>--stdin</code></td><td>Lit le mot de passe depuis l'entrée standard</td></tr>
+                    <tr><td><code>-d</code></td><td>Supprime le mot de passe (compte sans mot de passe)</td></tr>
+                    <tr><td><code>-l</code></td><td>Verrouille le compte</td></tr>
+                    <tr><td><code>-u</code></td><td>Déverrouille le compte</td></tr>
+                    <tr><td><code>-e</code></td><td>Expire le mot de passe (forcé à changer)</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <pre><code>passwd alice                    # définit le mot de passe
+echo "pass123" | passwd --stdin alice   # depuis un script
+passwd -l alice                 # verrouille
+passwd -u alice                 # déverrouille
+passwd -d alice                 # supprime le mot de passe</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="chfn, id, groups">
+            <div class="cmd-header"><code class="cmd-name">chfn · id · groups</code><button class="cmd-copy" data-cmd="chfn [login]">Copier</button></div>
+            <div class="cmd-body">
+              <pre><code>chfn alice               # change le champ GECOS (nom, bureau, téléphone)
+id                       # affiche UID, GID et groupes
+id alice                 # pour un utilisateur spécifique
+groups                   # liste les groupes de l'utilisateur courant
+groups alice             # pour un utilisateur spécifique</code></pre>
+            </div>
+          </div>
+
+          <div class="card card-key">
+            <div class="card-label">Ce qu'il faut retenir</div>
+            <ul>
+              <li>Les utilisateurs sont définis dans <code>/etc/passwd</code> (7 champs).</li>
+              <li>Les mots de passe sont cryptés dans <code>/etc/shadow</code>.</li>
+              <li>Les groupes sont dans <code>/etc/group</code> (4 champs).</li>
+              <li><code>useradd</code> crée, <code>usermod</code> modifie, <code>userdel</code> supprime.</li>
+              <li><code>passwd</code> gère les mots de passe (verrouillage, expiration).</li>
+              <li>Toujours utiliser <code>sudo</code> ou être root pour ces opérations.</li>
+            </ul>
+          </div>
+        </article>
+
+      </div><!-- end ch-body -->
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- CHAPITRE III                                                  -->
+    <!-- ================================================================ -->
+    <section class="chapter" id="ch3" data-chapter="3">
+      <div class="ch-header">
+        <h2 class="ch-title">Chapitre III : Gestion des fichiers</h2>
+        <button class="ch-toggle" aria-label="Toggle chapter" data-target="ch3-body">▼</button>
+      </div>
+
+      <div class="ch-body" id="ch3-body">
+
+        <article class="section" id="ch3-s1">
+          <h3 class="section-title">III.1 Présentation des répertoires</h3>
+
+          <p>Le système de fichiers GNU/Linux suit la <strong>FHS</strong> (Filesystem Hierarchy Standard). Voici les répertoires principaux :</p>
+
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Répertoire</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>/bin</code></td><td>Binaires essentiels (ls, cp, mv, cat...)</td></tr>
+                <tr><td><code>/boot</code></td><td>Noyau, initrd, configuration du bootloader</td></tr>
+                <tr><td><code>/dev</code></td><td>Périphériques (disques, terminaux, etc.)</td></tr>
+                <tr><td><code>/etc</code></td><td>Fichiers de configuration système</td></tr>
+                <tr><td><code>/home</code></td><td>Répertoires personnels des utilisateurs</td></tr>
+                <tr><td><code>/lib</code> / <code>/lib64</code></td><td>Bibliothèques partagées</td></tr>
+                <tr><td><code>/lost+found</code></td><td>Fichiers récupérés après un crash</td></tr>
+                <tr><td><code>/mnt</code></td><td>Point de montage temporaire</td></tr>
+                <tr><td><code>/proc</code></td><td>Système de fichiers virtuel des processus</td></tr>
+                <tr><td><code>/root</code></td><td>Home de l'utilisateur root</td></tr>
+                <tr><td><code>/sbin</code></td><td>Binaires système (root : fdisk, mkfs...)</td></tr>
+                <tr><td><code>/tmp</code></td><td>Fichiers temporaires (vidés au reboot)</td></tr>
+                <tr><td><code>/usr</code></td><td>Hiérarchie secondaire (programmes, librairies)</td></tr>
+                <tr><td><code>/var</code></td><td>Données variables (logs, spool, caches)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>Sous-répertoires importants</h4>
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Chemin</th><th>Contenu</th></tr></thead>
+              <tbody>
+                <tr><td><code>/etc/init.d/</code></td><td>Scripts de démarrage des services</td></tr>
+                <tr><td><code>/etc/default/</code></td><td>Fichiers de configuration par défaut</td></tr>
+                <tr><td><code>/etc/network/</code></td><td>Configuration réseau</td></tr>
+                <tr><td><code>/etc/cron.d/</code></td><td>Tâches planifiées</td></tr>
+                <tr><td><code>/usr/bin/</code></td><td>Binaires utilisateur</td></tr>
+                <tr><td><code>/usr/lib/</code></td><td>Bibliothèques</td></tr>
+                <tr><td><code>/usr/local/</code></td><td>Programmes installés localement</td></tr>
+                <tr><td><code>/usr/share/</code></td><td>Données partagées (doc, man, icônes)</td></tr>
+                <tr><td><code>/usr/src/</code></td><td>Code source du noyau</td></tr>
+                <tr><td><code>/var/log/</code></td><td>Logs système</td></tr>
+                <tr><td><code>/var/spool/</code></td><td>Files d'attente (impression, mail)</td></tr>
+                <tr><td><code>/var/cache/</code></td><td>Cache (paquets apt, etc.)</td></tr>
+                <tr><td><code>/var/lib/</code></td><td>Données d'état des programmes</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="section" id="ch3-s2">
+          <h3 class="section-title">III.2 Types de fichiers et permissions</h3>
+
+          <div class="card card-def">
+            <div class="card-label">Définition</div>
+            <p>Dans GNU/Linux, <strong>tout est fichier</strong> : les documents, les répertoires, les périphériques, les sockets, les pipes nommés.</p>
+          </div>
+
+          <h4>Types de fichiers</h4>
+          <p>Le premier caractère de <code>ls -l</code> indique le type :</p>
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Caractère</th><th>Type</th><th>Exemple</th></tr></thead>
+              <tbody>
+                <tr><td><code>-</code></td><td>Fichier normal</td><td><code>-rw-r--r--</code></td></tr>
+                <tr><td><code>d</code></td><td>Répertoire</td><td><code>drwxr-xr-x</code></td></tr>
+                <tr><td><code>l</code></td><td>Lien symbolique</td><td><code>lrwxrwxrwx</code></td></tr>
+                <tr><td><code>b</code></td><td>Périphérique bloc (disque)</td><td><code>brw-rw----</code></td></tr>
+                <tr><td><code>c</code></td><td>Périphérique caractère (série)</td><td><code>crw-rw-rw-</code></td></tr>
+                <tr><td><code>p</code></td><td>FIFO (tube nommé)</td><td><code>prw-rw-r--</code></td></tr>
+                <tr><td><code>s</code></td><td>Socket</td><td><code>srwxrwxr-x</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>Permissions UNIX</h4>
+          <p>Chaque fichier a 3 catégories de droits (<strong>u</strong> = user, <strong>g</strong> = group, <strong>o</strong> = others) et 3 opérations (<strong>r</strong> = read, <strong>w</strong> = write, <strong>x</strong> = execute).</p>
+
+          <div class="table-wrap">
+            <table class="styled-table">
+              <caption>Permissions sur fichiers et répertoires</caption>
+              <thead><tr><th>Permission</th><th>Fichier</th><th>Répertoire</th></tr></thead>
+              <tbody>
+                <tr><td><code>r</code> (4)</td><td>Lire le contenu</td><td>Lister les entrées</td></tr>
+                <tr><td><code>w</code> (2)</td><td>Modifier le contenu</td><td>Créer/supprimer des entrées</td></tr>
+                <tr><td><code>x</code> (1)</td><td>Exécuter</td><td>Traverser (cd, accès)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>Commandes de gestion des droits</h4>
+
+          <div class="cmd-card" data-cmd="chmod">
+            <div class="cmd-header"><code class="cmd-name">chmod</code><button class="cmd-copy" data-cmd="chmod [mode] fichier">Copier</button></div>
+            <div class="cmd-body">
+              <p>Change les permissions d'un fichier ou répertoire.</p>
+              <p><strong>Notation symbolique :</strong></p>
+              <pre><code>chmod u+x fichier          # ajoute x au propriétaire
+chmod g-w fichier          # retire w au groupe
+chmod o=r fichier          # met r seul pour others
+chmod u=rw,g=r,o=r fich   # explicite
+chmod a+x fichier          # +x pour tous (ugo)
+chmod -R u+rwx dossier/   # récursif</code></pre>
+              <p><strong>Notation octale :</strong></p>
+              <pre><code>chmod 755 fichier          # u=rwx (7), g=rx (5), o=rx (5)
+chmod 644 fichier          # u=rw-, g=r--, o=r--
+chmod 700 fichier          # u=rwx, g=---, o=---
+#  r=4, w=2, x=1
+#  Ex: 7 = 4+2+1 (rwx), 6 = 4+2 (rw-), 5 = 4+1 (r-x)</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="chown, chgrp">
+            <div class="cmd-header"><code class="cmd-name">chown · chgrp</code><button class="cmd-copy" data-cmd="chown [propriétaire][:groupe] fichier">Copier</button></div>
+            <div class="cmd-body">
+              <pre><code>chown alice fichier            # change le propriétaire
+chown alice:projet fichier     # propriétaire + groupe
+chown :projet fichier          # change seulement le groupe
+chgrp projet fichier           # idem
+chown -R alice:dossier/        # récursif</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="umask">
+            <div class="cmd-header"><code class="cmd-name">umask</code><button class="cmd-copy" data-cmd="umask [valeur]">Copier</button></div>
+            <div class="cmd-body">
+              <p>Définit les permissions par défaut pour les nouveaux fichiers. Le masque est soustrait aux droits maximum (666 pour fichiers, 777 pour dossiers).</p>
+              <pre><code>umask                   # affiche le masque courant (ex: 0022)
+umask 0027              # nouveau masque
+# 022 → fichiers: 644 (rw-r--r--), dossiers: 755 (rwxr-xr-x)
+# 027 → fichiers: 640 (rw-r-----), dossiers: 750 (rwxr-x---)
+# 077 → fichiers: 600 (rw-------), dossiers: 700 (rwx------)</code></pre>
+            </div>
+          </div>
+
+          <h4>Droits étendus (SUID, SGID, Sticky bit)</h4>
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Droit</th><th>Valeur octale</th><th>Signification</th></tr></thead>
+              <tbody>
+                <tr><td><strong>SUID</strong></td><td>4000</td><td>Le fichier s'exécute avec les droits du <strong>propriétaire</strong>. (ex: <code>/usr/bin/passwd</code>)</td></tr>
+                <tr><td><strong>SGID</strong></td><td>2000</td><td>Le fichier s'exécute avec les droits du <strong>groupe</strong>. Sur un dossier, les nouveaux fichiers héritent du groupe.</td></tr>
+                <tr><td><strong>Sticky bit</strong></td><td>1000</td><td>Sur un dossier (<code>/tmp</code>), seuls le propriétaire du fichier ou root peuvent supprimer leurs fichiers.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-block">
+            <div class="code-hdr"><span>Exemples d'utilisation</span><button class="cmd-copy" data-cmd="chmod u+s fichier">Copier</button></div>
+            <pre><code>chmod u+s fichier           # SUID (affiché 's' à la place du x)
+chmod g+s dossier/          # SGID (affiché 's' dans le groupe)
+chmod +t dossier/           # Sticky bit (affiché 't' dans others)
+# Notation octale combinée :
+chmod 4755 fichier          # SUID (4) + 755
+chmod 2755 fichier          # SGID (2) + 755
+chmod 1755 dossier          # Sticky (1) + 755
+chmod 6755 fichier          # SUID (4) + SGID (2) + 755</code></pre>
+          </div>
+
+          <div class="card card-piege">
+            <div class="card-label">Piège !</div>
+            <p>Un script shell avec <strong>SUID</strong> ne fonctionnera pas sur la plupart des systèmes modernes car le noyau ignore le bit SUID sur les scripts pour des raisons de sécurité.</p>
+          </div>
+
+          <div class="card card-key">
+            <div class="card-label">Ce qu'il faut retenir</div>
+            <ul>
+              <li>Permissions : <strong>r=4, w=2, x=1</strong>.</li>
+              <li><code>chmod</code> pour les permissions, <code>chown</code> pour le propriétaire, <code>chgrp</code> pour le groupe.</li>
+              <li><code>umask</code> définit les droits par défaut.</li>
+              <li>SUID (4000) = exécution avec les droits du propriétaire, SGID (2000) = héritage du groupe, Sticky (1000) = protection des fichiers dans /tmp.</li>
+              <li>Le premier caractère de <code>ls -l</code> donne le type de fichier.</li>
+            </ul>
+          </div>
+        </article>
+
+      </div><!-- end ch-body -->
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- CHAPITRE IV                                                   -->
+    <!-- ================================================================ -->
+    <section class="chapter" id="ch4" data-chapter="4">
+      <div class="ch-header">
+        <h2 class="ch-title">Chapitre IV : Travail avec les shells</h2>
+        <button class="ch-toggle" aria-label="Toggle chapter" data-target="ch4-body">▼</button>
+      </div>
+
+      <div class="ch-body" id="ch4-body">
+
+        <article class="section" id="ch4-s1">
+          <h3 class="section-title">IV.1 Le shell</h3>
+
+          <div class="card card-def">
+            <div class="card-label">Définition</div>
+            <p>Le <strong>shell</strong> est l'interpréteur de commandes du système. Il peut être utilisé en mode <strong>interactif</strong> (l'utilisateur tape les commandes) ou en mode <strong>script</strong> (lecture d'un fichier de commandes).</p>
+          </div>
+
+          <h4>Démarrage d'un shell de connexion</h4>
+          <p>Ordre de lecture des scripts de configuration :</p>
+          <ol>
+            <li><code>/etc/profile</code> — configuration globale pour tous les utilisateurs.</li>
+            <li><code>~/.bash_profile</code> ou <code>~/.bash_login</code> ou <code>~/.profile</code> — personnel.</li>
+            <li>À la fin de la session : <code>~/.bash_logout</code>.</li>
+          </ol>
+
+          <p>Pour un shell non interactif (script) : <code>~/.bashrc</code> est lu (et <code>/etc/bashrc</code> ou <code>/etc/bash.bashrc</code>).</p>
+
+          <div class="card card-tip">
+            <div class="card-label">Astuce</div>
+            <p>Placez vos alias et fonctions dans <code>~/.bashrc</code> et sourcez-le depuis <code>~/.bash_profile</code> pour qu'ils soient disponibles à la fois en connexion et en shell interactif.</p>
+          </div>
+
+          <h4>Personnalisation</h4>
+          <div class="code-block">
+            <div class="code-hdr"><span>Alias et variables</span><button class="cmd-copy" data-cmd="alias ll='ls -la'">Copier</button></div>
+            <pre><code>alias ll='ls -la'
+alias gs='git status'
+alias rm='rm -i'           # sécurité
+unalias ll                 # supprime un alias
+
+# Variables
+ma_variable="valeur"
+echo $ma_variable
+export ma_variable         # exporte dans l'environnement</code></pre>
+          </div>
+        </article>
+
+        <article class="section" id="ch4-s2">
+          <h3 class="section-title">IV.2 Fichiers de configuration utilisateur</h3>
+
+          <div class="card card-def">
+            <div class="card-label">Définition</div>
+            <p>Les <strong>variables d'environnement</strong> sont des paramètres qui influencent le comportement des programmes. Elles sont héritées par les processus fils.</p>
+          </div>
+
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Variable</th><th>Rôle</th></tr></thead>
+              <tbody>
+                <tr><td><code>HOME</code></td><td>Répertoire personnel (~)</td></tr>
+                <tr><td><code>USER</code> / <code>LOGNAME</code></td><td>Nom d'utilisateur courant</td></tr>
+                <tr><td><code>TERM</code></td><td>Type de terminal (xterm, linux)</td></tr>
+                <tr><td><code>SHELL</code></td><td>Shell de connexion</td></tr>
+                <tr><td><code>PATH</code></td><td>Chemins de recherche des exécutables</td></tr>
+                <tr><td><code>LD_LIBRARY_PATH</code></td><td>Chemins des bibliothèques dynamiques</td></tr>
+                <tr><td><code>LANG</code></td><td>Locale (langue, encodage : fr_FR.UTF-8)</td></tr>
+                <tr><td><code>PWD</code></td><td>Répertoire courant</td></tr>
+                <tr><td><code>OLDPWD</code></td><td>Précédent répertoire (<code>cd -</code>)</td></tr>
+                <tr><td><code>PS1</code></td><td>Format de l'invite du shell</td></tr>
+                <tr><td><code>IFS</code></td><td>Séparateur de champs (espace, tab, newline)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-block">
+            <div class="code-hdr"><span>Exemples</span><button class="cmd-copy" data-cmd="echo $PATH">Copier</button></div>
+            <pre><code>echo $PATH
+export PATH=$PATH:/usr/local/bin   # ajoute un chemin
+export PS1='\u@\h:\w\$ '           # utilisateur@hôte:répertoire$
+export LANG=fr_FR.UTF-8
+env                                  # liste toutes les variables
+set                                  # liste toutes les variables + fonctions</code></pre>
+          </div>
+        </article>
+
+        <article class="section" id="ch4-s3">
+          <h3 class="section-title">IV.3 Programmation shell</h3>
+
+          <div class="priority-box p2">
+            <span class="priority-badge">Niveau 2</span>
+            <p>La programmation shell (bash scripting) est essentielle pour l'automatisation des tâches d'administration.</p>
+          </div>
+
+          <h4>Caractères d'échappement et guillemets</h4>
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Syntaxe</th><th>Comportement</th></tr></thead>
+              <tbody>
+                <tr><td><code>'texte'</code></td><td>Guillemets simples : tout est littéral (pas de substitution)</td></tr>
+                <tr><td><code>"texte"</code></td><td>Guillemets doubles : substitution de variables (<code>$var</code>) et commandes (<code>`cmd`</code>)</td></tr>
+                <tr><td><code>\c</code></td><td>Échappement : le caractère suivant est traité littéralement</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-block">
+            <div class="code-hdr"><span>Exemples de guillemets</span><button class="cmd-copy" data-cmd='echo "Bonjour $USER"'>Copier</button></div>
+            <pre><code>echo "Bonjour $USER"      # Bonjour alice
+echo 'Bonjour $USER'      # Bonjour $USER
+echo "Aujourd'hui"        # erreur possible, utiliser \'
+echo 'Aujourd'\''hui'     # Aujourd'hui
+echo \$USER                # $USER (littéral)</code></pre>
+          </div>
+
+          <h4>Substitutions</h4>
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Syntaxe</th><th>Résultat</th></tr></thead>
+              <tbody>
+                <tr><td><code>~</code></td><td>Répertoire home</td></tr>
+                <tr><td><code>~utilisateur</code></td><td>Home de l'utilisateur</td></tr>
+                <tr><td><code>${var}</code></td><td>Valeur de la variable</td></tr>
+                <tr><td><code>${var:-defaut}</code></td><td><code>var</code> ou "defaut" si non définie</td></tr>
+                <tr><td><code>${var:?err}</code></td><td>Erreur si var non définie</td></tr>
+                <tr><td><code>${var#prefixe}</code></td><td>Supprime le plus court préfixe</td></tr>
+                <tr><td><code>${var##prefixe}</code></td><td>Supprime le plus long préfixe</td></tr>
+                <tr><td><code>${var%suffixe}</code></td><td>Supprime le plus court suffixe</td></tr>
+                <tr><td><code>${var%%suffixe}</code></td><td>Supprime le plus long suffixe</td></tr>
+                <tr><td><code>$(cmd)</code> / <code>`cmd`</code></td><td>Substitution de commande (remplacé par la sortie de <code>cmd</code>)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-block">
+            <div class="code-hdr"><span>Exemples de substitutions</span><button class="cmd-copy" data-cmd='echo ${HOME}'>Copier</button></div>
+            <pre><code>echo ${HOME}                      # /home/alice
+echo ${HOME:-/tmp}                # /home/alice (ou /tmp si vide)
+fichier="photo.jpg"
+echo ${fichier%.*}                # photo
+echo ${fichier##*.}               # jpg
+
+# Substitution de commande
+echo "Date : $(date +%Y-%m-%d)"
+fichiers=$(ls -la)
+echo "Il y a $(wc -l < fichier) lignes"</code></pre>
+          </div>
+
+          <h4>Contrôle de processus</h4>
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Commande</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>commande &amp;</code></td><td>Lance en arrière-plan (background)</td></tr>
+                <tr><td><code>jobs</code></td><td>Liste les tâches en arrière-plan</td></tr>
+                <tr><td><code>fg %n</code></td><td>Ramène la tâche n au premier plan</td></tr>
+                <tr><td><code>bg %n</code></td><td>Relance la tâche n en arrière-plan</td></tr>
+                <tr><td><code>Ctrl+Z</code></td><td>Suspend le processus en cours</td></tr>
+                <tr><td><code>Ctrl+C</code></td><td>Interrompt le processus (SIGINT)</td></tr>
+                <tr><td><code>kill %n</code></td><td>Tue la tâche n</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-block">
+            <div class="code-hdr"><span>Exemple de gestion des tâches</span><button class="cmd-copy" data-cmd="sleep 30 &">Copier</button></div>
+            <pre><code>sleep 30 &                # [1] 12345
+tail -f /var/log/syslog &  # [2] 12346
+jobs                      # affiche [1] Running, [2] Running
+fg %1                     # ramène sleep au premier plan
+Ctrl+Z                    # suspend
+bg %1                     # relance en arrière-plan
+kill %1                   # termine la tâche</code></pre>
+          </div>
+
+          <h4>Redirections</h4>
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Opérateur</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>cmd &gt; fichier</code></td><td>Redirige stdout vers fichier (écrase)</td></tr>
+                <tr><td><code>cmd &gt;&gt; fichier</code></td><td>Redirige stdout vers fichier (ajoute)</td></tr>
+                <tr><td><code>cmd 2&gt; fichier</code></td><td>Redirige stderr</td></tr>
+                <tr><td><code>cmd &amp;&gt; fichier</code></td><td>Redirige stdout ET stderr</td></tr>
+                <tr><td><code>cmd 2&gt;&amp;1</code></td><td>stderr vers la même destination que stdout</td></tr>
+                <tr><td><code>cmd &lt; fichier</code></td><td>Redirige stdin depuis un fichier</td></tr>
+                <tr><td><code>cmd &lt;&lt; EOF</code></td><td>Here-document (lit stdin jusqu'à EOF)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-block">
+            <div class="code-hdr"><span>Exemples de redirection</span><button class="cmd-copy" data-cmd='ls > listing.txt'>Copier</button></div>
+            <pre><code>ls &gt; listing.txt                # stdout vers fichier
+ls inexistant 2&gt; erreur.log   # stderr vers fichier
+ls &gt; tout.log 2&gt;&amp;1            # tout dans un fichier
+cat &lt; fichier                   # lit depuis un fichier
+cat &lt;&lt; EOF &gt; fichier          # here-document
+&gt; Bonjour
+&gt; EOF
+# Pipe : envoie stdout d'une commande vers l'entrée d'une autre
+ls -la | grep ".txt" | wc -l</code></pre>
+          </div>
+
+          <h4>Caractères génériques (wildcards)</h4>
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Motif</th><th>Signification</th></tr></thead>
+              <tbody>
+                <tr><td><code>*</code></td><td>N'importe quelle chaîne (y compris vide)</td></tr>
+                <tr><td><code>?</code></td><td>Un seul caractère</td></tr>
+                <tr><td><code>[abc]</code></td><td>Un caractère parmi a, b, c</td></tr>
+                <tr><td><code>[a-z]</code></td><td>Un caractère dans l'intervalle a-z</td></tr>
+                <tr><td><code>[!abc]</code></td><td>Un caractère SAUF a, b, c</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-block">
+            <div class="code-hdr"><span>Exemples de globbing</span><button class="cmd-copy" data-cmd="ls *.txt">Copier</button></div>
+            <pre><code>ls *.txt                  # tous les fichiers .txt
+ls fichier???             # fichier001, fichierABC...
+ls [a-c]*                 # fichiers commençant par a, b ou c
+rm -rf tmp[0-9]/          # supprime tmp0, tmp1, ... tmp9</code></pre>
+          </div>
+
+          <h4>Structures de contrôle</h4>
+
+          <div class="code-block">
+            <div class="code-hdr"><span>if</span><button class="cmd-copy" data-cmd="if [ condition ]; then ... fi">Copier</button></div>
+            <pre><code>if [ "$USER" = "root" ]; then
+    echo "Vous êtes root"
+elif [ "$USER" = "alice" ]; then
+    echo "Bonjour Alice"
+else
+    echo "Accès limité"
+fi</code></pre>
+          </div>
+
+          <div class="code-block">
+            <div class="code-hdr"><span>for</span><button class="cmd-copy" data-cmd="for i in liste; do ... done">Copier</button></div>
+            <pre><code>for i in *.txt; do
+    echo "Traitement de $i"
+    wc -l "$i"
+done
+
+for i in {1..10}; do
+    echo "itération $i"
+done</code></pre>
+          </div>
+
+          <div class="code-block">
+            <div class="code-hdr"><span>while / until</span><button class="cmd-copy" data-cmd="while [ condition ]; do ... done">Copier</button></div>
+            <pre><code># while : s'exécute tant que la condition est vraie
+count=0
+while [ $count -lt 5 ]; do
+    echo $count
+    count=$((count + 1))
+done
+
+# until : s'exécute jusqu'à ce que la condition devienne vraie
+until [ -f /tmp/stop ]; do
+    echo "Attente..."
+    sleep 2
+done</code></pre>
+          </div>
+
+          <div class="code-block">
+            <div class="code-hdr"><span>case</span><button class="cmd-copy" data-cmd="case $var in motif) ... ;; esac">Copier</button></div>
+            <pre><code>case "$1" in
+    start)
+        echo "Démarrage..."
+        ;;
+    stop)
+        echo "Arrêt..."
+        ;;
+    restart|reload)
+        echo "Redémarrage..."
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac</code></pre>
+          </div>
+
+          <div class="code-block">
+            <div class="code-hdr"><span>Opérateurs && et ||</span><button class="cmd-copy" data-cmd="cmd1 && cmd2">Copier</button></div>
+            <pre><code># && : exécute cmd2 si cmd1 réussit (code retour 0)
+make && make install
+
+# || : exécute cmd2 si cmd1 échoue
+ping -c1 serveur || echo "Serveur injoignable"
+
+# combinaison
+./configure &amp;&amp; make &amp;&amp; make install || echo "Échec"</code></pre>
+          </div>
+
+          <h4>Scripts shell</h4>
+          <div class="code-block">
+            <div class="code-hdr"><span>modèle de script</span><button class="cmd-copy" data-cmd="chmod +x script.sh">Copier</button></div>
+            <pre><code>#!/bin/bash
+# Mon premier script
+set -euo pipefail   # arrêt sur erreur, variables non définies, pipe
+
+echo "Date : $(date)"
+echo "Utilisateur : $USER"
+echo "Répertoire : $PWD"
+
+exit 0</code></pre>
+          </div>
+
+          <div class="card card-key">
+            <div class="card-label">Ce qu'il faut retenir</div>
+            <ul>
+              <li>Les scripts shell commencent par <code>#!/bin/bash</code> (shebang).</li>
+              <li>Utilisez <code>$()</code> plutôt que les backticks pour la substitution de commande (lisibilité, imbrication).</li>
+              <li>Guillemets simples <code>'...'</code> = littéral ; doubles <code>"..."</code> = substitution.</li>
+              <li>Redirections : <code>&gt;</code> (sortie), <code>&lt;</code> (entrée), <code>2&gt;</code> (erreur), <code>|</code> (pipe).</li>
+              <li><code>&amp;</code> passe un processus en arrière-plan ; <code>fg</code>/<code>bg</code>/<code>jobs</code> le gèrent.</li>
+              <li>Structures : <code>if</code>, <code>for</code>, <code>while</code>, <code>until</code>, <code>case</code>.</li>
+            </ul>
+          </div>
+        </article>
+
+      </div><!-- end ch-body -->
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- CHAPITRE V                                                    -->
+    <!-- ================================================================ -->
+    <section class="chapter" id="ch5" data-chapter="5">
+      <div class="ch-header">
+        <h2 class="ch-title">Chapitre V : Fonctionnement du système</h2>
+        <button class="ch-toggle" aria-label="Toggle chapter" data-target="ch5-body">▼</button>
+      </div>
+
+      <div class="ch-body" id="ch5-body">
+
+        <article class="section" id="ch5-s1">
+          <h3 class="section-title">V.1 Multi-tâches et processus</h3>
+
+          <div class="card card-def">
+            <div class="card-label">Définition</div>
+            <p>Un <strong>processus</strong> est un programme en cours d'exécution. Le système multitâche permet à plusieurs processus de partager le temps CPU (<strong>time sharing</strong>).</p>
+          </div>
+
+          <p>États d'un processus :</p>
+          <ul>
+            <li><strong>Actif (Running)</strong> — s'exécute sur le CPU.</li>
+            <li><strong>Prêt (Ready)</strong> — pourrait s'exécuter, mais en attente de CPU.</li>
+            <li><strong>Bloqué (Blocked/Sleeping)</strong> — en attente d'une ressource (E/S, signal).</li>
+          </ul>
+
+          <div class="priority-box p1">
+            <span class="priority-badge">Niveau 1</span>
+            <p>Le processus <strong>init</strong> (PID 1) est l'ancêtre de tous les processus. Il est lancé par le noyau au démarrage.</p>
+          </div>
+        </article>
+
+        <article class="section" id="ch5-s2">
+          <h3 class="section-title">V.2 Initialisation et arrêt du système</h3>
+
+          <h4>Séquence de démarrage</h4>
+          <ol>
+            <li><strong>BIOS/UEFI</strong> — test matériel (POST) et recherche d'un périphérique amorçable.</li>
+            <li><strong>LILO</strong> ou <strong>GRUB</strong> — chargeur d'amorçage qui affiche un menu et charge le noyau.</li>
+            <li><strong>Noyau</strong> — décompression, initialisation du matériel, montage du système de fichiers racine.</li>
+            <li><strong>init</strong> (PID 1) — lance les scripts de démarrage selon le <strong>niveau d'exécution</strong> (runlevel).</li>
+          </ol>
+
+          <h4>Niveaux d'exécution (runlevels)</h4>
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Runlevel</th><th>Mode</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>0</code></td><td>Arrêt</td><td>Halt (shutdown)</td></tr>
+                <tr><td><code>1</code></td><td>Monoutilisateur</td><td>Mode maintenance (root), pas de réseau</td></tr>
+                <tr><td><code>2</code></td><td>Multutilisateur</td><td>Sans réseau (Debian : avec réseau)</td></tr>
+                <tr><td><code>3</code></td><td>Multutilisateur</td><td>Avec réseau, mode texte</td></tr>
+                <tr><td><code>4</code></td><td>Non utilisé</td><td>Personnalisable</td></tr>
+                <tr><td><code>5</code></td><td>Multutilisateur</td><td>Avec réseau et interface graphique (X11)</td></tr>
+                <tr><td><code>6</code></td><td>Redémarrage</td><td>Reboot</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>Fichier de configuration : <code>/etc/inittab</code> définit le runlevel par défaut et les scripts à exécuter. Répertoire : <code>/etc/rc.d/</code> (ou <code>/etc/init.d</code>).</p>
+
+          <div class="cmd-card" data-cmd="shutdown">
+            <div class="cmd-header"><code class="cmd-name">shutdown</code><button class="cmd-copy" data-cmd="shutdown [options] temps [message]">Copier</button></div>
+            <div class="cmd-body">
+              <pre><code>shutdown -h now           # arrêt immédiat
+shutdown -r now           # redémarrage
+shutdown -h +5            # arrêt dans 5 minutes
+shutdown -c               # annule un arrêt planifié
+shutdown 17:00 "Fin de journée"</code></pre>
+            </div>
+          </div>
+        </article>
+
+        <article class="section" id="ch5-s3">
+          <h3 class="section-title">V.3 Gestion des services</h3>
+
+          <p>Les services (démons) sont contrôlés via des scripts dans <code>/etc/rc.d/init.d/</code> :</p>
+          <div class="code-block">
+            <div class="code-hdr"><span>Gestion des services</span><button class="cmd-copy" data-cmd="/etc/rc.d/init.d/script start">Copier</button></div>
+            <pre><code>/etc/rc.d/init.d/network start
+/etc/rc.d/init.d/network stop
+/etc/rc.d/init.d/network restart
+/etc/rc.d/init.d/network status</code></pre>
+          </div>
+
+          <p>Sur les systèmes modernes (Systemd) :</p>
+          <div class="code-block">
+            <div class="code-hdr"><span>systemctl</span><button class="cmd-copy" data-cmd="systemctl start service">Copier</button></div>
+            <pre><code>systemctl start ssh
+systemctl stop ssh
+systemctl restart ssh
+systemctl status ssh
+systemctl enable ssh    # démarrage automatique
+systemctl disable ssh</code></pre>
+          </div>
+
+          <h4>Outils de gestion</h4>
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Outil</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>chkconfig</code></td><td>Affiche/modifie les services aux runlevels (SysV)</td></tr>
+                <tr><td><code>ntsysv</code></td><td>Interface textuelle pour activer/désactiver les services</td></tr>
+                <tr><td><code>systemctl</code></td><td>Gestion des services Systemd (moderne)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-block">
+            <div class="code-hdr"><span>chkconfig</span><button class="cmd-copy" data-cmd="chkconfig --list">Copier</button></div>
+            <pre><code>chkconfig --list              # liste tous les services
+chkconfig sshd on             # active sshd aux runlevels par défaut
+chkconfig sshd off            # désactive
+chkconfig --level 35 sshd on  # active seulement aux niveaux 3 et 5</code></pre>
+          </div>
+        </article>
+
+        <article class="section" id="ch5-s4">
+          <h3 class="section-title">V.4 Gestion des processus</h3>
+
+          <div class="cmd-card" data-cmd="ps">
+            <div class="cmd-header"><code class="cmd-name">ps</code><button class="cmd-copy" data-cmd="ps [options]">Copier</button></div>
+            <div class="cmd-body">
+              <p>Affiche les processus en cours.</p>
+              <pre><code>ps                       # processus du terminal courant
+ps -ef                   # tous les processus (format complet)
+ps aux                   # tous (format BSD)
+ps -eo pid,ppid,cmd,%mem --sort=-%mem  # trié par mémoire
+pstree                   # arbre des processus</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="top">
+            <div class="cmd-header"><code class="cmd-name">top · htop</code><button class="cmd-copy" data-cmd="top">Copier</button></div>
+            <div class="cmd-body">
+              <p>Moniteur interactif des processus (mise à jour continue).</p>
+              <pre><code>top                      # lance top
+  h                        # aide
+  q                        # quitter
+  k                        # tuer un processus
+  u                        # filtrer par utilisateur
+htop                     # version améliorée (si installée)</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="free">
+            <div class="cmd-header"><code class="cmd-name">free</code><button class="cmd-copy" data-cmd="free [options]">Copier</button></div>
+            <div class="cmd-body">
+              <p>Affiche la mémoire utilisée et disponible.</p>
+              <pre><code>free -h                  # tailles lisibles
+free -m                  # en Mo
+free -s 5                # mise à jour toutes les 5 secondes</code></pre>
+            </div>
+          </div>
+
+          <h4>Signaux</h4>
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Signal</th><th>Numéro</th><th>Action</th></tr></thead>
+              <tbody>
+                <tr><td><code>SIGHUP</code></td><td>1</td><td>Rechargement de la configuration</td></tr>
+                <tr><td><code>SIGINT</code></td><td>2</td><td>Interruption (Ctrl+C)</td></tr>
+                <tr><td><code>SIGKILL</code></td><td>9</td><td>Force l'arrêt (ne peut être ignoré)</td></tr>
+                <tr><td><code>SIGTERM</code></td><td>15</td><td>Demande d'arrêt (par défaut)</td></tr>
+                <tr><td><code>SIGSTOP</code></td><td>19</td><td>Suspend le processus (Ctrl+Z)</td></tr>
+                <tr><td><code>SIGCONT</code></td><td>18</td><td>Reprend un processus suspendu</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-block">
+            <div class="code-hdr"><span>Exemples de kill</span><button class="cmd-copy" data-cmd="kill -15 1234">Copier</button></div>
+            <pre><code>kill 1234                 # SIGTERM (15)
+kill -9 1234              # SIGKILL
+kill -19 1234             # SIGSTOP (suspend)
+kill -18 1234             # SIGCONT (reprend)
+killall firefox           # tue tous les processus nommés firefox
+pkill -u alice            # tue tous les processus d'alice</code></pre>
+          </div>
+        </article>
+
+        <article class="section" id="ch5-s5">
+          <h3 class="section-title">V.5 Ressources systèmes</h3>
+
+          <div class="cmd-card" data-cmd="df, du">
+            <div class="cmd-header"><code class="cmd-name">df · du</code><button class="cmd-copy" data-cmd="df -h">Copier</button></div>
+            <div class="cmd-body">
+              <pre><code>df -h                    # espace disque (humain)
+df -i                    # utilisation des inodes
+du -sh dossier/          # taille totale d'un dossier
+du -h --max-depth=1 /home # taille des sous-dossiers (1 niveau)
+du -ah                   # taille de chaque fichier</code></pre>
+            </div>
+          </div>
+
+          <h4>Quotas disques</h4>
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Commande</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>edquota -u alice</code></td><td>Éditer les quotas d'un utilisateur</td></tr>
+                <tr><td><code>edquota -g groupe</code></td><td>Quotas d'un groupe</td></tr>
+                <tr><td><code>repquota -a</code></td><td>Rapport des quotas pour tous</td></tr>
+                <tr><td><code>quota -u alice</code></td><td>Affiche les quotas de l'utilisateur</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>/proc</h4>
+          <p>Le système de fichiers <code>/proc</code> est un système de fichiers virtuel qui expose les informations du noyau et des processus sous forme de fichiers.</p>
+          <div class="code-block">
+            <div class="code-hdr"><span>Exemples /proc</span><button class="cmd-copy" data-cmd="cat /proc/cpuinfo">Copier</button></div>
+            <pre><code>cat /proc/cpuinfo        # informations CPU
+cat /proc/meminfo        # mémoire détaillée
+cat /proc/version        # version du noyau
+cat /proc/1234/status    # infos sur le processus PID 1234
+cat /proc/partitions     # partitions détectées
+cat /proc/loadavg        # charge moyenne
+ls /proc/                # liste des processus (dossiers numérotés)</code></pre>
+          </div>
+        </article>
+
+      </div><!-- end ch-body -->
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- CHAPITRE VI                                                   -->
+    <!-- ================================================================ -->
+    <section class="chapter" id="ch6" data-chapter="6">
+      <div class="ch-header">
+        <h2 class="ch-title">Chapitre VI : Éléments de réseau</h2>
+        <button class="ch-toggle" aria-label="Toggle chapter" data-target="ch6-body">▼</button>
+      </div>
+
+      <div class="ch-body" id="ch6-body">
+
+        <article class="section" id="ch6-s1">
+          <h3 class="section-title">VI.1 Notions de réseau</h3>
+
+          <div class="card card-def">
+            <div class="card-label">Définition</div>
+            <p>Un <strong>réseau informatique</strong> est un ensemble d'équipements reliés entre eux pour échanger des informations.</p>
+          </div>
+
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Type</th><th>Étendue</th><th>Exemple</th></tr></thead>
+              <tbody>
+                <tr><td><strong>LAN</strong></td><td>Local Area Network</td><td>Réseau d'entreprise, maison</td></tr>
+                <tr><td><strong>MAN</strong></td><td>Metropolitan Area Network</td><td>Réseau de ville</td></tr>
+                <tr><td><strong>WAN</strong></td><td>Wide Area Network</td><td>Internet</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>Modèle OSI (7 couches)</h4>
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Couche</th><th>Nom</th><th>Exemple</th></tr></thead>
+              <tbody>
+                <tr><td>7</td><td>Application</td><td>HTTP, FTP, SMTP, DNS</td></tr>
+                <tr><td>6</td><td>Présentation</td><td>SSL/TLS, MIME</td></tr>
+                <tr><td>5</td><td>Session</td><td>RPC, NetBIOS</td></tr>
+                <tr><td>4</td><td>Transport</td><td>TCP, UDP</td></tr>
+                <tr><td>3</td><td>Réseau</td><td>IP, ICMP, ARP</td></tr>
+                <tr><td>2</td><td>Liaison</td><td>Ethernet, Wi-Fi, PPP</td></tr>
+                <tr><td>1</td><td>Physique</td><td>Câbles, fibre, ondes radio</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="section" id="ch6-s2">
+          <h3 class="section-title">VI.4 TCP/IP et adressage IP</h3>
+
+          <div class="card card-def">
+            <div class="card-label">Définition</div>
+            <p>Le protocole <strong>IP</strong> (Internet Protocol) assure l'adressage et le routage des paquets. <strong>TCP</strong> (Transmission Control Protocol) assure une connexion fiable entre deux hôtes.</p>
+          </div>
+
+          <h4>Adressage IPv4</h4>
+          <p>Adresse sur 32 bits (4 octets), notée en notation décimale pointée : <code>192.168.1.10</code>.</p>
+          <p>Une adresse IP se compose de deux parties : <strong>ID réseau</strong> + <strong>ID hôte</strong>. Le masque (ou CIDR) sépare les deux.</p>
+
+          <div class="table-wrap">
+            <table class="styled-table">
+              <caption>Classes d'adresses IPv4</caption>
+              <thead><tr><th>Classe</th><th>Début</th><th>Masque par défaut</th><th>Plage privée</th></tr></thead>
+              <tbody>
+                <tr><td>A</td><td>1.0.0.0 – 127.255.255.255</td><td>/8 (255.0.0.0)</td><td>10.0.0.0/8</td></tr>
+                <tr><td>B</td><td>128.0.0.0 – 191.255.255.255</td><td>/16 (255.255.0.0)</td><td>172.16.0.0/12</td></tr>
+                <tr><td>C</td><td>192.0.0.0 – 223.255.255.255</td><td>/24 (255.255.255.0)</td><td>192.168.0.0/16</td></tr>
+                <tr><td>D</td><td>224.0.0.0 – 239.255.255.255</td><td>Multicast</td><td>—</td></tr>
+                <tr><td>E</td><td>240.0.0.0 – 255.255.255.255</td><td>Réservé</td><td>—</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card card-tip">
+            <div class="card-label">Astuce</div>
+            <p>Les adresses privées (RFC 1918) ne sont pas routées sur Internet. <strong>NAT</strong> (Network Address Translation) permet de les faire communiquer avec l'extérieur.</p>
+          </div>
+
+          <div class="card card-key">
+            <div class="card-label">Ce qu'il faut retenir</div>
+            <ul>
+              <li>Adresses privées : <code>10.0.0.0/8</code>, <code>172.16.0.0/12</code>, <code>192.168.0.0/16</code>.</li>
+              <li>L'IPv6 (128 bits) remplace progressivement IPv4 (épuisement des adresses).</li>
+              <li>Le <strong>routage IP</strong> achemine les paquets de la source à la destination en traversant des routeurs.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="section" id="ch6-s3">
+          <h3 class="section-title">V.5 (sic) Configuration réseau</h3>
+
+          <h4>Fichiers de configuration réseau</h4>
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Fichier</th><th>Rôle</th></tr></thead>
+              <tbody>
+                <tr><td><code>/etc/hosts</code></td><td>Correspondance noms d'hôte → IP (avant DNS)</td></tr>
+                <tr><td><code>/etc/resolv.conf</code></td><td>Serveurs DNS</td></tr>
+                <tr><td><code>/etc/host.conf</code></td><td>Ordre de résolution (hosts, bind, nis)</td></tr>
+                <tr><td><code>/etc/networks</code></td><td>Noms de réseaux</td></tr>
+                <tr><td><code>/etc/hostname</code></td><td>Nom de la machine</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-block">
+            <div class="code-hdr"><span>Exemples de fichiers réseau</span><button class="cmd-copy" data-cmd="cat /etc/hosts">Copier</button></div>
+            <pre><code># /etc/hosts
+127.0.0.1   localhost
+192.168.1.10 serveur.local serveur
+
+# /etc/resolv.conf
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+search localdomain</code></pre>
+          </div>
+
+          <div class="cmd-card" data-cmd="ifconfig, route, hostname">
+            <div class="cmd-header"><code class="cmd-name">ifconfig · route · hostname</code><button class="cmd-copy" data-cmd="ifconfig">Copier</button></div>
+            <div class="cmd-body">
+              <pre><code>ifconfig                     # affiche les interfaces
+ifconfig eth0 192.168.1.10   # configure une IP (temporaire)
+ifconfig eth0 up             # active l'interface
+ifconfig eth0 down           # désactive
+hostname                     # affiche le nom d'hôte
+hostname -I                  # affiche toutes les IP
+route -n                     # table de routage
+route add default gw 192.168.1.1  # route par défaut</code></pre>
+            </div>
+          </div>
+        </article>
+
+        <article class="section" id="ch6-s4">
+          <h3 class="section-title">VI.6 Commandes d'administration réseau</h3>
+
+          <div class="cmd-card" data-cmd="ping">
+            <div class="cmd-header"><code class="cmd-name">ping</code><button class="cmd-copy" data-cmd="ping [options] cible">Copier</button></div>
+            <div class="cmd-body">
+              <p>Teste la connectivité avec un hôte distant (paquets ICMP echo).</p>
+              <pre><code>ping google.com
+ping -c 4 8.8.8.8         # 4 paquets seulement
+ping -i 2 192.168.1.1     # intervalle de 2 secondes</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="netstat">
+            <div class="cmd-header"><code class="cmd-name">netstat</code><button class="cmd-copy" data-cmd="netstat [options]">Copier</button></div>
+            <div class="cmd-body">
+              <p>Affiche les connexions réseau, tables de routage, interfaces.</p>
+              <pre><code>netstat -tulpn            # connexions TCP/UDP en écoute
+netstat -an               # toutes les connexions
+netstat -rn               # table de routage
+netstat -i                # statistiques interfaces</code></pre>
+            </div>
+          </div>
+
+          <div class="cmd-card" data-cmd="arp, traceroute">
+            <div class="cmd-header"><code class="cmd-name">arp · traceroute</code><button class="cmd-copy" data-cmd="arp -a">Copier</button></div>
+            <div class="cmd-body">
+              <pre><code>arp -a                    # table ARP (IP → MAC)
+arp -d 192.168.1.1       # supprime une entrée
+traceroute google.com     # trace le chemin jusqu'à la cible
+traceroute -n 8.8.8.8    # sans résolution DNS</code></pre>
+            </div>
+          </div>
+        </article>
+
+        <article class="section" id="ch6-s5">
+          <h3 class="section-title">VI.7 Services réseau</h3>
+
+          <div class="cmd-card" data-cmd="telnet, ftp, dig">
+            <div class="cmd-header"><code class="cmd-name">telnet · ftp · dig</code><button class="cmd-copy" data-cmd="telnet hôte port">Copier</button></div>
+            <div class="cmd-body">
+              <pre><code>telnet serveur 22         # test de connexion SSH
+telnet smtp.example.com 25 # test SMTP
+ftp ftp.example.com       # client FTP
+dig google.com            # requête DNS détaillée
+dig -x 8.8.8.8            # reverse DNS
+dig @8.8.8.8 example.com  # interroge un DNS spécifique</code></pre>
+            </div>
+          </div>
+
+          <div class="card card-key">
+            <div class="card-label">Ce qu'il faut retenir</div>
+            <ul>
+              <li><code>ping</code> = test ICMP, <code>traceroute</code> = route, <code>dig</code> = DNS.</li>
+              <li><code>ifconfig</code> = configuration IP, <code>route</code> = routage, <code>netstat</code> = stats.</li>
+              <li>Configuration réseau : <code>/etc/hosts</code>, <code>/etc/resolv.conf</code>, <code>/etc/hostname</code>.</li>
+              <li>Adresses privées : <code>10.0.0.0/8</code>, <code>172.16.0.0/12</code>, <code>192.168.0.0/16</code>.</li>
+            </ul>
+          </div>
+        </article>
+
+      </div><!-- end ch-body -->
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- CHAPITRE VII                                                  -->
+    <!-- ================================================================ -->
+    <section class="chapter" id="ch7" data-chapter="7">
+      <div class="ch-header">
+        <h2 class="ch-title">Chapitre VII : Gestion des programmes</h2>
+        <button class="ch-toggle" aria-label="Toggle chapter" data-target="ch7-body">▼</button>
+      </div>
+
+      <div class="ch-body" id="ch7-body">
+
+        <article class="section" id="ch7-s1">
+          <h3 class="section-title">VII.1 RPM (Red Hat Package Manager)</h3>
+
+          <div class="card card-def">
+            <div class="card-label">Définition</div>
+            <p><strong>RPM</strong> est le gestionnaire de paquets des distributions Red Hat, Fedora, CentOS, SUSE. Les fichiers portent l'extension <code>.rpm</code>.</p>
+          </div>
+
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Commande</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>rpm -i paquet.rpm</code></td><td>Installation</td></tr>
+                <tr><td><code>rpm -U paquet.rpm</code></td><td>Mise à jour (installe si absent)</td></tr>
+                <tr><td><code>rpm -e paquet</code></td><td>Suppression (erase)</td></tr>
+                <tr><td><code>rpm -q paquet</code></td><td>Vérifie si le paquet est installé</td></tr>
+                <tr><td><code>rpm -V paquet</code></td><td>Vérifie l'intégrité des fichiers</td></tr>
+                <tr><td><code>rpm -qa</code></td><td>Liste tous les paquets installés</td></tr>
+                <tr><td><code>rpm -ql paquet</code></td><td>Liste les fichiers du paquet</td></tr>
+                <tr><td><code>rpm -ivh paquet.rpm</code></td><td>Installation verbeuse avec barre de progression</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-block">
+            <div class="code-hdr"><span>Exemples RPM</span><button class="cmd-copy" data-cmd="rpm -ivh package.rpm">Copier</button></div>
+            <pre><code>rpm -ivh apache2-2.4.41.rpm   # installation verbeuse
+rpm -qa | grep apache         # recherche un paquet installé
+rpm -ql apache2               # fichiers installés par apache2
+rpm -e apache2                # suppression
+rpm -V apache2                # vérifie les fichiers modifiés</code></pre>
+          </div>
+
+          <div class="card card-piege">
+            <div class="card-label">Piège !</div>
+            <p>RPM ne résout pas automatiquement les dépendances. Utilisez <code>yum</code> ou <code>dnf</code> pour une gestion automatique des dépendances sur Red Hat/Fedora.</p>
+          </div>
+        </article>
+
+        <article class="section" id="ch7-s2">
+          <h3 class="section-title">VII.2 tar et compression</h3>
+
+          <div class="card card-def">
+            <div class="card-label">Définition</div>
+            <p><strong>tar</strong> (Tape ARchive) est l'outil standard d'archivage. Il ne compresse pas par défaut, mais peut être combiné avec <strong>gzip</strong> (<code>.tar.gz</code>) ou <strong>bzip2</strong> (<code>.tar.bz2</code>).</p>
+          </div>
+
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Action</th><th>Commande</th></tr></thead>
+              <tbody>
+                <tr><td>Créer</td><td><code>tar -cvf archive.tar dossier/</code></td></tr>
+                <tr><td>Extraire</td><td><code>tar -xvf archive.tar</code></td></tr>
+                <tr><td>Lister</td><td><code>tar -tvf archive.tar</code></td></tr>
+                <tr><td>Ajouter</td><td><code>tar -rvf archive.tar fichier</code></td></tr>
+                <tr><td>Créer compressé (gzip)</td><td><code>tar -czvf archive.tar.gz dossier/</code></td></tr>
+                <tr><td>Extraire (gzip)</td><td><code>tar -xzvf archive.tar.gz</code></td></tr>
+                <tr><td>Créer compressé (bzip2)</td><td><code>tar -cjvf archive.tar.bz2 dossier/</code></td></tr>
+                <tr><td>Extraire (bzip2)</td><td><code>tar -xjvf archive.tar.bz2</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-block">
+            <div class="code-hdr"><span>Exemples tar</span><button class="cmd-copy" data-cmd="tar -czvf backup.tar.gz /home">Copier</button></div>
+            <pre><code>tar -czvf backup.tar.gz /home/alice
+tar -xzvf backup.tar.gz -C /tmp
+tar -tvf backup.tar.gz | head
+
+# gzip seul
+gzip fichier                # -> fichier.gz
+gunzip fichier.gz           # -> fichier
+
+# bzip2 (meilleure compression, plus lent)
+bzip2 fichier               # -> fichier.bz2
+bunzip2 fichier.bz2
+tar -cjvf archive.tar.bz2 dossier/</code></pre>
+          </div>
+
+          <div class="card card-tip">
+            <div class="card-label">Astuce</div>
+            <p>Utilisez <code>-C</code> (capital C) pour extraire dans un répertoire spécifique. Les options <code>-z</code>, <code>-j</code>, <code>-J</code> correspondent à gzip, bzip2, xz.</p>
+          </div>
+        </article>
+
+        <article class="section" id="ch7-s3">
+          <h3 class="section-title">VII.3 Aide en ligne</h3>
+
+          <div class="card card-def">
+            <div class="card-label">Définition</div>
+            <p><strong>man</strong> (manual) est le système de documentation traditionnel d'UNIX/Linux. Les pages sont organisées en sections numérotées.</p>
+          </div>
+
+          <div class="table-wrap">
+            <table class="styled-table">
+              <caption>Sections des pages man</caption>
+              <thead><tr><th>Section</th><th>Contenu</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Commandes utilisateur</td></tr>
+                <tr><td>2</td><td>Appels système</td></tr>
+                <tr><td>3</td><td>Fonctions de la bibliothèque C</td></tr>
+                <tr><td>4</td><td>Périphériques (fichiers spéciaux)</td></tr>
+                <tr><td>5</td><td>Formats de fichiers</td></tr>
+                <tr><td>6</td><td>Jeux et programmes divers</td></tr>
+                <tr><td>7</td><td>Divers (conventions, macro-packages)</td></tr>
+                <tr><td>8</td><td>Commandes d'administration (root)</td></tr>
+                <tr><td>9</td><td>Routines du noyau (Linux)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-block">
+            <div class="code-hdr"><span>Commandes d'aide</span><button class="cmd-copy" data-cmd="man ls">Copier</button></div>
+            <pre><code>man ls                    # page de manuel de ls
+man 5 passwd              # section 5 (format de fichier)
+man -k "mot clef"         # recherche dans les descriptions
+apropos "mot"             # idem (recherche dans les noms)
+whatis ls                 # description courte
+
+# INFO (système GNU)
+info ls                   # documentation info (plus détaillée)
+
+# Variable MANPATH
+export MANPATH=/usr/share/man:/usr/local/man
+
+# Ressources en ligne
+# LDP (Linux Documentation Project)
+# HOWTO (guides thématiques)</code></pre>
+          </div>
+
+          <div class="card card-tip">
+            <div class="card-label">Astuce</div>
+            <p>Dans <code>man</code>, tapez <code>/</code> pour chercher un mot, <code>n</code> pour le suivant, <code>q</code> pour quitter.</p>
+          </div>
+        </article>
+
+      </div><!-- end ch-body -->
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- CHAPITRE VIII                                                -->
+    <!-- ================================================================ -->
+    <section class="chapter" id="ch8" data-chapter="8">
+      <div class="ch-header">
+        <h2 class="ch-title">Chapitre VIII : Installation de GNU/Linux</h2>
+        <button class="ch-toggle" aria-label="Toggle chapter" data-target="ch8-body">▼</button>
+      </div>
+
+      <div class="ch-body" id="ch8-body">
+
+        <article class="section" id="ch8-s1">
+          <h3 class="section-title">VIII.1 Pré-requis matériels</h3>
+
+          <div class="card card-def">
+            <div class="card-label">Définition</div>
+            <p>Avant d'installer GNU/Linux, il faut vérifier la compatibilité et les pré-requis du matériel.</p>
+          </div>
+
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Élément</th><th>Minimum</th><th>Recommandé</th></tr></thead>
+              <tbody>
+                <tr><td>Processeur</td><td>Pentium / Celeron / AMD</td><td>Dual core 2 GHz+</td></tr>
+                <tr><td>RAM</td><td>512 Mo (texte), 1 Go (GUI)</td><td>4 Go+</td></tr>
+                <tr><td>Disque dur</td><td>4 Go</td><td>20 Go+</td></tr>
+                <tr><td>Carte réseau</td><td>Ethernet 10/100</td><td>Gigabit</td></tr>
+                <tr><td>Carte graphique</td><td>VGA compatible</td><td>Accélérée 3D</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="section" id="ch8-s2">
+          <h3 class="section-title">VIII.2 Informations périphériques avant installation</h3>
+
+          <p>Avant d'installer, collectez les informations suivantes :</p>
+          <ul>
+            <li>Type et modèle du processeur.</li>
+            <li>Taille de la RAM.</li>
+            <li>Disques durs (IDE, SCSI, SATA, NVMe) — taille et type.</li>
+            <li>Carte réseau — modèle et pilote.</li>
+            <li>Carte graphique — modèle et quantité de mémoire.</li>
+            <li>Souris, clavier (PS/2, USB).</li>
+            <li>Adresse MAC si contrôle d'accès réseau.</li>
+          </ul>
+        </article>
+
+        <article class="section" id="ch8-s3">
+          <h3 class="section-title">VIII.3 Partitionnement</h3>
+
+          <div class="priority-box p2">
+            <span class="priority-badge">Niveau 2</span>
+            <p>Le partitionnement est une étape cruciale. Une mauvaise répartition de l'espace peut être difficile à corriger par la suite.</p>
+          </div>
+
+          <h4>Partitions recommandées</h4>
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Partition</th><th>Taille</th><th>Rôle</th></tr></thead>
+              <tbody>
+                <tr><td><code>swap</code></td><td>= RAM (ou 2x RAM)</td><td>Mémoire virtuelle</td></tr>
+                <tr><td><code>/</code></td><td>2-5 Go</td><td>Racine du système</td></tr>
+                <tr><td><code>/boot</code></td><td>50-200 Mo</td><td>Noyau et bootloader</td></tr>
+                <tr><td><code>/usr</code></td><td>5-10 Go</td><td>Programmes et bibliothèques</td></tr>
+                <tr><td><code>/var</code></td><td>2-5 Go</td><td>Logs, spool, caches</td></tr>
+                <tr><td><code>/tmp</code></td><td>1-2 Go</td><td>Fichiers temporaires</td></tr>
+                <tr><td><code>/home</code></td><td>Reste</td><td>Données utilisateurs</td></tr>
+                <tr><td><code>/usr/src</code></td><td>1-2 Go</td><td>Code source (noyau)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>Outils de partitionnement</h4>
+          <div class="table-wrap">
+            <table class="styled-table">
+              <thead><tr><th>Outil</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>fdisk</code></td><td>Outil de partitionnement en ligne de commande</td></tr>
+                <tr><td><code>fips</code></td><td>Redimensionne les partitions FAT (pour dual-boot)</td></tr>
+                <tr><td><code>parted</code> / <code>gparted</code></td><td>Partitionnement avancé (ext2/3/4, NTFS, etc.)</td></tr>
+                <tr><td><code>cfdisk</code></td><td>Interface textuelle de partitionnement</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-block">
+            <div class="code-hdr"><span>fdisk — exemples</span><button class="cmd-copy" data-cmd="fdisk -l">Copier</button></div>
+            <pre><code>fdisk -l                    # liste les partitions
+fdisk /dev/sda              # édite la table de partitions
+  m                         # aide
+  n                         # nouvelle partition
+  p                         # primaire
+  e                         # étendue
+  d                         # supprime
+  w                         # écrit et quitte
+  q                         # quitte sans sauver</code></pre>
+          </div>
+
+          <h4>Amorçage et multiboot</h4>
+
+          <div class="card card-def">
+            <div class="card-label">Définition</div>
+            <p>Le <strong>bootloader</strong> (chargeur d'amorçage) est le programme qui charge le noyau en mémoire. En multiboot, il permet de choisir entre plusieurs systèmes d'exploitation.</p>
+          </div>
+
+          <div class="card card-tip">
+            <div class="card-label">Astuce</div>
+            <p>Sauvegardez toujours la configuration du bootloader avant modification : <code>cp /etc/lilo.conf /etc/lilo.conf.backup</code>.</p>
+          </div>
+
+          <h5>LILO (Linux Loader)</h5>
+          <p>Fichier de configuration : <code>/etc/lilo.conf</code></p>
+          <div class="code-block">
+            <div class="code-hdr"><span>/etc/lilo.conf</span><button class="cmd-copy" data-cmd="cat /etc/lilo.conf">Copier</button></div>
+            <pre><code>boot=/dev/hda
+read-only
+prompt
+timeout=50
+keytable=fr-latin1
+
+image=/boot/vmlinuz-2.4.18
+  root=/dev/hda2
+  label=linux
+
+other=/dev/hda1
+  table=/dev/hda
+  loader=/boot/chain.b
+  label=dos</code></pre>
+          </div>
+
+          <h5>GRUB (Grand Unified Bootloader)</h5>
+          <p>Fichier de configuration : <code>/boot/grub/menu.lst</code> (ou <code>/boot/grub/grub.cfg</code>)</p>
+          <div class="code-block">
+            <div class="code-hdr"><span>GRUB menu.lst</span><button class="cmd-copy" data-cmd="cat /boot/grub/menu.lst">Copier</button></div>
+            <pre><code>default 0
+timeout 10
+
+title Linux
+  root (hd0,0)
+  kernel /vmlinuz root=/dev/sda1 ro
+  initrd /initrd.img
+
+title Windows
+  root (hd0,1)
+  chainloader +1</code></pre>
+          </div>
+
+          <h5>NTLDR (Windows)</h5>
+          <p>Pour amorcer Linux depuis le chargeur Windows :</p>
+          <ol>
+            <li>Copier le secteur de boot Linux dans un fichier (<code>dd if=/dev/sda2 of=/bootsect.lnx bs=512 count=1</code>).</li>
+            <li>Copier ce fichier sur la partition Windows.</li>
+            <li>Ajouter une ligne dans <code>boot.ini</code> : <code>c:\bootsect.lnx="Linux"</code></li>
+          </ol>
+
+          <div class="card card-key">
+            <div class="card-label">Ce qu'il faut retenir</div>
+            <ul>
+              <li>Toujours prévoir une partition <strong>swap</strong> de taille égale ou double à la RAM.</li>
+              <li>LILO utilise <code>/etc/lilo.conf</code> ; GRUB utilise <code>/boot/grub/menu.lst</code>.</li>
+              <li>En multiboot avec Windows, on peut chaîner le boot via NTLDR en copiant le secteur de boot.</li>
+              <li><code>fdisk</code> est l'outil historique de partitionnement (<code>m</code> pour l'aide, <code>w</code> pour écrire).</li>
+              <li>Les partitions recommandées sont : <code>swap</code>, <code>/</code>, <code>/boot</code>, <code>/usr</code>, <code>/var</code>, <code>/tmp</code>, <code>/home</code>.</li>
+            </ul>
+          </div>
+        </article>
+
+      </div><!-- end ch-body -->
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <p>Documentation GNU/Linux — Cours d'administration système. Document généré à partir des notes de cours.</p>
+      <p>Ressources complémentaires : <a href="https://www.kernel.org" target="_blank" rel="noopener">kernel.org</a> — <a href="https://www.gnu.org" target="_blank" rel="noopener">gnu.org</a> — <a href="https://tldp.org" target="_blank" rel="noopener">tldp.org</a></p>
+    </footer>
+
+  </main>
+
+  <button class="theme-btn" id="themeToggle" aria-label="Changer le thème">🌙</button>
+  <button class="top-btn" id="backToTop" aria-label="Retour en haut">↑</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
