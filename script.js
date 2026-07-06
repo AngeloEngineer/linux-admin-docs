@@ -147,11 +147,17 @@ function showCopied(btn){
 /* --- THEME --- */
 const themeBtn=document.getElementById('themeToggle');
 const saved=localStorage.getItem('linux-doc-theme');
-if(saved==='dark'){document.body.classList.add('dark');if(themeBtn)themeBtn.textContent='\u2600\uFE0F'}
+function setThemeIcon(dark){
+  if(!themeBtn)return;
+  themeBtn.innerHTML=dark
+    ?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'
+    :'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+}
+if(saved==='dark'){document.body.classList.add('dark');setThemeIcon(true)}
 if(themeBtn)themeBtn.addEventListener('click',()=>{
   document.body.classList.toggle('dark');
   const d=document.body.classList.contains('dark');
-  themeBtn.textContent=d?'\u2600\uFE0F':'\uD83C\uDF19';
+  setThemeIcon(d);
   localStorage.setItem('linux-doc-theme',d?'dark':'light');
 });
 
@@ -297,8 +303,8 @@ function createQuestionCard(q, examMode) {
   let statusBadge = '';
   if(status) {
     statusBadge = status.correct
-      ? '<span class="question-badge qb-correct">✅ Réussi</span>'
-      : '<span class="question-badge qb-incorrect">❌ Échoué</span>';
+      ? '<span class="question-badge qb-correct">Réussi</span>'
+      : '<span class="question-badge qb-incorrect">Échoué</span>';
   }
 
   const chapterTitle = QB.chapters.find(c => c.id === q.chapter)?.title || q.chapter;
@@ -329,7 +335,7 @@ function createQuestionCard(q, examMode) {
 
   const revealBtn = document.createElement('button');
   revealBtn.className = 'reveal-btn';
-  revealBtn.textContent = status ? '🔒 Masquer la réponse' : '👁 Voir la réponse';
+  revealBtn.textContent = status ? 'Masquer la réponse' : 'Voir la réponse';
   card.appendChild(revealBtn);
 
   const answerDiv = document.createElement('div');
@@ -346,7 +352,7 @@ function createQuestionCard(q, examMode) {
     const revealed = answerDiv.classList.toggle('revealed');
     if(revealed) {
       answerDiv.style.maxHeight = answerDiv.scrollHeight + 'px';
-      revealBtn.textContent = '🔒 Masquer la réponse';
+      revealBtn.textContent = 'Masquer la réponse';
       // Mark as seen
       if(!state.userAnswers[q.id]) {
         state.userAnswers[q.id] = { seen: true, correct: false };
@@ -354,7 +360,7 @@ function createQuestionCard(q, examMode) {
       }
     } else {
       answerDiv.style.maxHeight = '0';
-      revealBtn.textContent = '👁 Voir la réponse';
+      revealBtn.textContent = 'Voir la réponse';
     }
   });
 
@@ -438,10 +444,10 @@ function renderVF(q, container, examMode, card) {
 
   const vrai = document.createElement('button');
   vrai.className = 'vf-btn vrai';
-  vrai.textContent = '✅ Vrai';
+  vrai.textContent = 'Vrai';
   const faux = document.createElement('button');
   faux.className = 'vf-btn faux';
-  faux.textContent = '❌ Faux';
+  faux.textContent = 'Faux';
 
   if(saved) {
     if(saved.value === true) vrai.classList.add('selected-vrai');
@@ -567,10 +573,10 @@ function buildAnswerHTML(q) {
   if(q.answer) html += `<p><strong>Réponse :</strong></p><p>${q.answer}</p>`;
   if(q.code && q.type !== 'erreur') html += `<div class="answer-code">${q.code}</div>`;
   if(q.example) html += `<div class="answer-code">${q.example}</div>`;
-  if(q.explanation) html += `<div class="answer-explanation"><strong>💡 Explication :</strong> ${q.explanation}</div>`;
-  if(q.commonMistake) html += `<div class="answer-mistake"><strong>⚠️ Erreur fréquente :</strong> ${q.commonMistake}</div>`;
-  if(q.keyTakeaway) html += `<div class="answer-keytakeaway"><strong>🎯 À retenir :</strong> ${q.keyTakeaway}</div>`;
-  if(q.reviewChapter) html += `<a href="#${q.reviewChapter}" class="answer-review">📖 Revoir le cours</a>`;
+  if(q.explanation) html += `<div class="answer-explanation"><strong>Explication</strong><br>${q.explanation}</div>`;
+  if(q.commonMistake) html += `<div class="answer-mistake"><strong>Erreur fréquente</strong><br>${q.commonMistake}</div>`;
+  if(q.keyTakeaway) html += `<div class="answer-keytakeaway"><strong>À retenir</strong><br>${q.keyTakeaway}</div>`;
+  if(q.reviewChapter) html += `<a href="#${q.reviewChapter}" class="answer-review">Revoir le cours</a>`;
 
   html += '</div>';
   return html;
@@ -633,7 +639,7 @@ function checkBadges() {
   const earned = BADGES.filter(b => b.check(s) && !s.badges.includes(b.id));
   earned.forEach(b => {
     s.badges.push(b.id);
-    showToast(`🏆 Badge débloqué : ${b.label} !`);
+    showToast(`Badge débloqué : ${b.label}`);
   });
   if(earned.length) localStorage.setItem(STAT_KEY, JSON.stringify(state.stats));
 }
@@ -694,7 +700,7 @@ function startExam() {
   if(time > 0) startExamTimer(time);
   else {
     const timer = el('examTimer');
-    if(timer) timer.textContent = '⏱ --:--';
+    if(timer) timer.textContent = '--:--';
   }
 
   renderExamQuestion();
@@ -720,7 +726,7 @@ function updateTimerDisplay() {
   if(!t) return;
   const m = Math.floor(state.examTimeLeft / 60);
   const s = state.examTimeLeft % 60;
-  t.textContent = `⏱ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  t.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
   t.className = 'exam-timer';
   if(state.examTimeLeft < 30) t.classList.add('danger');
   else if(state.examTimeLeft < 60) t.classList.add('warning');
@@ -841,15 +847,15 @@ function submitExam(timeUp) {
 
   results.innerHTML = `
     <div class="exam-results-card">
-      <h3>${timeUp ? '⏱ Temps écoulé !' : '✅ Examen terminé !'}</h3>
+      <h3>${timeUp ? 'Temps écoulé' : 'Examen terminé'}</h3>
       <div class="exam-results-score">${correct}/${total}</div>
       <div style="font-size:1.2rem;font-weight:600;color:${pct>=50?'var(--blue)':'var(--red)'}">${pct}% — ${grade}</div>
       <div class="exam-results-detail">
-        <div class="stat-item"><span class="stat-icon">✅</span><span class="stat-label">Correctes</span><span class="stat-value">${correct}</span></div>
-        <div class="stat-item"><span class="stat-icon">❌</span><span class="stat-label">Incorrectes</span><span class="stat-value">${total - correct}</span></div>
-        <div class="stat-item"><span class="stat-icon">📊</span><span class="stat-label">Précision</span><span class="stat-value">${pct}%</span></div>
+        <div class="stat-item"><span class="stat-label">Correctes</span><span class="stat-value">${correct}</span></div>
+        <div class="stat-item"><span class="stat-label">Incorrectes</span><span class="stat-value">${total - correct}</span></div>
+        <div class="stat-item"><span class="stat-label">Précision</span><span class="stat-value">${pct}%</span></div>
       </div>
-      <button class="exam-btn exam-btn-primary" id="reviewExamBtn">📖 Revoir les réponses</button>
+      <button class="exam-btn exam-btn-primary" id="reviewExamBtn">Revoir les réponses</button>
     </div>
   `;
 
@@ -878,7 +884,7 @@ function submitExam(timeUp) {
     });
     const backBtn = document.createElement('button');
     backBtn.className = 'exam-btn exam-btn-primary';
-    backBtn.textContent = '← Retour au tableau de bord';
+    backBtn.textContent = 'Retour au tableau de bord';
     backBtn.onclick = () => { results.innerHTML = ''; switchMode('stats'); };
     results.appendChild(backBtn);
   });
@@ -902,7 +908,6 @@ function renderStats() {
   BADGES.forEach(b => {
     const unlocked = s.badges.includes(b.id);
     badgesHTML += `<div class="stat-item" style="${unlocked?'':'opacity:0.4'}">
-      <span class="stat-icon">${unlocked?'🏆':'🔒'}</span>
       <span class="stat-label">${b.label}</span>
       <span class="stat-value" style="font-size:0.75rem;font-weight:400">${b.desc}</span>
     </div>`;
@@ -939,14 +944,14 @@ function renderStats() {
 
   c.innerHTML = `
     <div class="stats-grid">
-      <div class="stat-item"><span class="stat-icon">📊</span><span class="stat-label">Questions résolues</span><span class="stat-value">${s.solved}</span></div>
-      <div class="stat-item"><span class="stat-icon">✅</span><span class="stat-label">Taux de réussite</span><span class="stat-value">${rate}%</span></div>
-      <div class="stat-item"><span class="stat-icon">🔥</span><span class="stat-label">Meilleure série</span><span class="stat-value">${s.maxStreak}j</span></div>
-      <div class="stat-item"><span class="stat-icon">🏆</span><span class="stat-label">Badges</span><span class="stat-value">${s.badges.length}/${BADGES.length}</span></div>
+      <div class="stat-item"><span class="stat-label">Questions résolues</span><span class="stat-value">${s.solved}</span></div>
+      <div class="stat-item"><span class="stat-label">Taux de réussite</span><span class="stat-value">${rate}%</span></div>
+      <div class="stat-item"><span class="stat-label">Meilleure série</span><span class="stat-value">${s.maxStreak}j</span></div>
+      <div class="stat-item"><span class="stat-label">Badges</span><span class="stat-value">${s.badges.length}/${BADGES.length}</span></div>
     </div>
-    <div style="margin:16px 0"><h4 style="font-size:0.9rem;margin-bottom:10px;color:var(--gray-700)">🏅 Badges</h4><div class="stats-grid">${badgesHTML}</div></div>
-    <div style="margin:16px 0"><h4 style="font-size:0.9rem;margin-bottom:10px;color:var(--gray-700)">📈 Progression par chapitre</h4>${chBars}</div>
-    <div style="margin:16px 0"><h4 style="font-size:0.9rem;margin-bottom:10px;color:var(--gray-700)">📊 Répartition par niveau</h4>${levelBars}</div>
+    <div style="margin:16px 0"><h4 style="font-size:0.9rem;margin-bottom:10px;color:var(--gray-700)">Badges</h4><div class="stats-grid">${badgesHTML}</div></div>
+    <div style="margin:16px 0"><h4 style="font-size:0.9rem;margin-bottom:10px;color:var(--gray-700)">Progression par chapitre</h4>${chBars}</div>
+    <div style="margin:16px 0"><h4 style="font-size:0.9rem;margin-bottom:10px;color:var(--gray-700)">Répartition par niveau</h4>${levelBars}</div>
   `;
 }
 
@@ -969,18 +974,18 @@ function renderWeakPoints() {
   });
 
   if(!weak.length) {
-    c.innerHTML = '<div class="stats-placeholder">🎉 Aucun point faible détecté ! Continuez ainsi.</div>';
+    c.innerHTML = '<div class="stats-placeholder">Aucun point faible détecté. Continuez ainsi.</div>';
     return;
   }
 
-  c.innerHTML = '<h4 style="font-size:0.9rem;margin-bottom:10px;color:var(--gray-700)">📉 Chapitres à réviser (moins de 60% de réussite)</h4>';
+  c.innerHTML = '<h4 style="font-size:0.9rem;margin-bottom:10px;color:var(--gray-700)">Chapitres à réviser (moins de 60% de réussite)</h4>';
   weak.forEach(w => {
     const div = document.createElement('div');
     div.className = 'weak-chapter';
     div.innerHTML = `
       <h4>${w.label}</h4>
       <p style="font-size:0.85rem;color:var(--gray-500)">${w.correct}/${w.solved} correct (${w.rate}%)</p>
-      <button class="exam-btn exam-btn-secondary weak-tag" data-chapter="${w.id}">📖 Réviser ce chapitre</button>
+      <button class="exam-btn exam-btn-secondary weak-tag" data-chapter="${w.id}">Réviser ce chapitre</button>
     `;
     div.querySelector('.weak-tag')?.addEventListener('click', () => {
       state.filterChapter = w.id;

@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GNU/Linux — Administration Système</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Bitcount+Single:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -89,12 +92,12 @@
           </ul>
         </li>
         <li class="nav-chapter">
-          <a href="#exam-chapter" class="nav-link ch-link">🎓 Entraînement à l'examen</a>
+          <a href="#exam-chapter" class="nav-link ch-link">Entraînement à l'examen</a>
           <ul class="nav-subs">
-            <li><a href="#panel-browse" data-mode="browse">📖 Parcourir les questions</a></li>
-            <li><a href="#panel-exam" data-mode="exam">⏱ Mode Examen</a></li>
-            <li><a href="#panel-stats" data-mode="stats">📈 Mes statistiques</a></li>
-            <li><a href="#panel-weak" data-mode="weak">🎯 Points faibles</a></li>
+            <li><a href="#panel-browse" data-mode="browse">Parcourir les questions</a></li>
+            <li><a href="#panel-exam" data-mode="exam">Mode Examen</a></li>
+            <li><a href="#panel-stats" data-mode="stats">Mes statistiques</a></li>
+            <li><a href="#panel-weak" data-mode="weak">Points faibles</a></li>
           </ul>
         </li>
       </ul>
@@ -1900,24 +1903,24 @@ title Windows
     <!-- ========== ENTRAÎNEMENT À L'EXAMEN ========== -->
     <div class="chapter" id="exam-chapter">
       <div class="ch-header">
-        <h2 class="ch-title">🎓 Entraînement à l'examen</h2>
+        <h2 class="ch-title">Entraînement à l'examen</h2>
         <button class="ch-toggle">▼</button>
       </div>
       <div class="ch-body">
         <!-- Stats Bar -->
         <div class="exam-stats-bar" id="examStatsBar">
-          <div class="stat-item"><span class="stat-icon">📊</span><span class="stat-label">Score global</span><span class="stat-value" id="globalScore">--</span></div>
-          <div class="stat-item"><span class="stat-icon">✅</span><span class="stat-label">Taux de réussite</span><span class="stat-value" id="successRate">--</span></div>
-          <div class="stat-item"><span class="stat-icon">🔥</span><span class="stat-label">Série en cours</span><span class="stat-value" id="currentStreak">0j</span></div>
-          <div class="stat-item"><span class="stat-icon">🏆</span><span class="stat-label">Questions résolues</span><span class="stat-value" id="solvedCount">0</span></div>
+          <div class="stat-item"><span class="stat-label">Score global</span><span class="stat-value" id="globalScore">--</span></div>
+          <div class="stat-item"><span class="stat-label">Taux de réussite</span><span class="stat-value" id="successRate">--</span></div>
+          <div class="stat-item"><span class="stat-label">Série en cours</span><span class="stat-value" id="currentStreak">0j</span></div>
+          <div class="stat-item"><span class="stat-label">Questions résolues</span><span class="stat-value" id="solvedCount">0</span></div>
         </div>
 
         <!-- Mode selector tabs -->
         <div class="exam-tabs" id="examTabs">
-          <button class="exam-tab active" data-mode="browse">📖 Parcourir</button>
-          <button class="exam-tab" data-mode="exam">⏱ Mode Examen</button>
-          <button class="exam-tab" data-mode="stats">📈 Statistiques</button>
-          <button class="exam-tab" data-mode="weak">🎯 Mes points faibles</button>
+          <button class="exam-tab active" data-mode="browse">Parcourir</button>
+          <button class="exam-tab" data-mode="exam">Mode Examen</button>
+          <button class="exam-tab" data-mode="stats">Statistiques</button>
+          <button class="exam-tab" data-mode="weak">Mes points faibles</button>
         </div>
 
         <!-- Mode: Browse -->
@@ -1928,7 +1931,7 @@ title Windows
             <select id="filterLevel"><option value="all">Tous niveaux</option><option value="debutant">Débutant</option><option value="intermediaire">Intermédiaire</option><option value="avance">Avancé</option></select>
             <select id="filterType"><option value="all">Tous types</option><option value="qcm">QCM</option><option value="vraifaux">Vrai/Faux</option><option value="ouverte">Question ouverte</option><option value="commande">Commande</option><option value="pratique">Pratique</option><option value="erreur">Trouver l'erreur</option><option value="interpretation">Interprétation</option></select>
             <select id="filterStatus"><option value="all">Tout statut</option><option value="untouched">Pas essayé</option><option value="correct">Réussi</option><option value="incorrect">Échoué</option></select>
-            <button class="exam-btn exam-btn-secondary" id="shuffleBtn">🔀 Aléatoire</button>
+            <button class="exam-btn exam-btn-secondary" id="shuffleBtn">Aléatoire</button>
             <span class="filter-count" id="filterCount">0 questions</span>
           </div>
           <!-- Question container -->
@@ -1938,7 +1941,7 @@ title Windows
         <!-- Mode: Exam -->
         <div class="exam-panel" id="panel-exam">
           <div class="exam-setup" id="examSetup">
-            <h3>⚙️ Configuration de l'examen</h3>
+            <h3>Configuration de l'examen</h3>
             <div class="exam-setup-row">
               <label>Nombre de questions :</label>
               <select id="examCount"><option value="5">5</option><option value="10" selected>10</option><option value="15">15</option><option value="20">20</option></select>
@@ -1955,19 +1958,19 @@ title Windows
               <label>Temps limite :</label>
               <select id="examTime"><option value="0">Aucun</option><option value="300">5 min</option><option value="600" selected>10 min</option><option value="900">15 min</option><option value="1800">30 min</option></select>
             </div>
-            <button class="exam-btn exam-btn-primary" id="startExamBtn">🚀 Commencer l'examen</button>
+            <button class="exam-btn exam-btn-primary" id="startExamBtn">Commencer l'examen</button>
           </div>
           <div class="exam-session hidden" id="examSession">
             <div class="exam-session-header">
-              <div class="exam-timer" id="examTimer">⏱ 00:00</div>
+              <div class="exam-timer" id="examTimer">00:00</div>
               <div class="exam-progress-q" id="examProgress">Question 0/0</div>
-              <button class="exam-btn exam-btn-danger" id="endExamBtn">❌ Terminer</button>
+              <button class="exam-btn exam-btn-danger" id="endExamBtn">Terminer</button>
             </div>
             <div id="examQuestionContainer"></div>
             <div class="exam-nav-buttons">
-              <button class="exam-btn exam-btn-secondary" id="prevExamBtn">◀ Précédente</button>
-              <button class="exam-btn exam-btn-secondary" id="nextExamBtn">Suivante ▶</button>
-              <button class="exam-btn exam-btn-primary hidden" id="submitExamBtn">✅ Soumettre</button>
+              <button class="exam-btn exam-btn-secondary" id="prevExamBtn">Précédente</button>
+              <button class="exam-btn exam-btn-secondary" id="nextExamBtn">Suivante</button>
+              <button class="exam-btn exam-btn-primary hidden" id="submitExamBtn">Soumettre</button>
             </div>
           </div>
           <div class="exam-results hidden" id="examResults">
@@ -1977,13 +1980,13 @@ title Windows
 
         <!-- Mode: Stats -->
         <div class="exam-panel" id="panel-stats">
-          <div class="stats-placeholder">📊 Vos statistiques détaillées apparaîtront ici après avoir répondu à des questions.</div>
+          <div class="stats-placeholder">Vos statistiques détaillées apparaîtront ici après avoir répondu à des questions.</div>
           <div id="statsContent"></div>
         </div>
 
         <!-- Mode: Weak points -->
         <div class="exam-panel" id="panel-weak">
-          <div class="stats-placeholder">🎯 Après avoir répondu à des questions, vos points faibles identifiés apparaîtront ici.</div>
+          <div class="stats-placeholder">Après avoir répondu à des questions, vos points faibles identifiés apparaîtront ici.</div>
           <div id="weakContent"></div>
         </div>
       </div>
@@ -1997,7 +2000,7 @@ title Windows
 
   </main>
 
-  <button class="theme-btn" id="themeToggle" aria-label="Changer le thème">🌙</button>
+  <button class="theme-btn" id="themeToggle" aria-label="Changer le thème"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
   <button class="top-btn" id="backToTop" aria-label="Retour en haut">↑</button>
 
   <script src="questions.js"></script>
