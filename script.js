@@ -364,6 +364,51 @@ function createQuestionCard(q, examMode) {
     }
   });
 
+  // AI Correction button (only for open-ended types, not in exam mode)
+  const aiTypes = ['ouverte', 'commande', 'pratique', 'erreur', 'interpretation'];
+  if(aiTypes.includes(q.type) && !examMode) {
+    const aiBtn = document.createElement('button');
+    aiBtn.className = 'reveal-btn ai-correct-btn';
+    aiBtn.textContent = 'Corriger par IA';
+    card.appendChild(aiBtn);
+
+    const aiResult = document.createElement('div');
+    aiResult.className = 'ai-correction';
+    aiResult.id = 'ai-result-' + q.id;
+    card.appendChild(aiResult);
+
+    aiBtn.addEventListener('click', async () => {
+      if(!window.AIProvider || !AIProvider.isConfigured()) {
+        aiResult.innerHTML = '<div class="ai-error">Configurez d\'abord une clé API dans l\'onglet Configuration IA.</div>';
+        aiResult.style.display = 'block';
+        return;
+      }
+      const userAns = state.userAnswers[q.id];
+      const text = userAns?.text || '';
+      if(!text.trim()) {
+        aiResult.innerHTML = '<div class="ai-error">Écrivez d\'abord une réponse avant de demander une correction.</div>';
+        aiResult.style.display = 'block';
+        return;
+      }
+      aiBtn.disabled = true;
+      aiBtn.textContent = 'Correction en cours...';
+      aiResult.innerHTML = '<div class="ai-loading">Analyse de votre réponse par l\'IA...</div>';
+      aiResult.style.display = 'block';
+      try {
+        const result = await AICorrector.correctOpen(q, text);
+        renderAICorrection(aiResult, result, q);
+        if(result && !result.error) {
+          AITutor.recordCorrection(q.id, result, q);
+        }
+      } catch(e) {
+        aiResult.innerHTML = '<div class="ai-error">Erreur lors de la correction : ' + e.message + '</div>';
+      } finally {
+        aiBtn.disabled = false;
+        aiBtn.textContent = 'Corriger par IA';
+      }
+    });
+  }
+
   return card;
 }
 
@@ -423,6 +468,8 @@ function renderQCM(q, container, examMode, card) {
   });
 
   container.appendChild(div);
+  // Add AI explanation button for QCM
+  if(!examMode) addQCMCorrectBtn(q, card);
 }
 
 function saveQCMAnswer(q, div) {
@@ -592,6 +639,256 @@ function markIncorrect(card, q) {
   if(!card) return;
   card.style.borderLeft = '4px solid var(--red)';
   updateStats(q.id, false);
+}
+
+/* ─── AI Correction Display ─── */
+function renderAICorrection(container, result, q) {
+  if(!result || result.error) {
+    container.innerHTML = '<div class="ai-error">' + (result?.error || 'Erreur inconnue') + '</div>';
+    return;
+  }
+
+  let html = '<div class="ai-correction-content">';
+
+  // Score overview
+  const total = result.total || 0;
+  const pct = result.pourcentage || Math.round(total / 20 * 100);
+  let gradeClass = 'grade-fail';
+  let grade = 'Insuffisant';
+  if(pct >= 90) { grade = 'Excellent'; gradeClass = 'grade-excellent'; }
+  else if(pct >= 75) { grade = 'Bien'; gradeClass = 'grade-good'; }
+  else if(pct >= 50) { grade = 'Passable'; gradeClass = 'grade-passable'; }
+
+  html += '<div class="ai-score-banner ' + gradeClass + '">';
+  html += '<div class="ai-score-value">' + total + '<span class="ai-score-max">/20</span></div>';
+  html += '<div class="ai-score-pct">' + pct + '% — ' + grade + '</div>';
+  html += '<div class="ai-score-bar"><div class="ai-score-fill" style="width:' + pct + '%"></div></div>';
+  html += '</div>';
+
+  // Detailed scores
+  const criteria = [
+    { key: 'comprehension', label: 'Compréhension', max: 5 },
+    { key: 'exactitude', label: 'Exactitude', max: 5 },
+    { key: 'completude', label: 'Complétude', max: 5 },
+    { key: 'precision', label: 'Précision technique', max: 3 },
+    { key: 'expression', label: 'Expression', max: 2 }
+  ];
+
+  html += '<div class="ai-criteria">';
+  criteria.forEach(c => {
+    const item = result[c.key];
+    if(!item) return;
+    const score = item.score || 0;
+    const pctC = Math.round(score / c.max * 100);
+    html += '<div class="ai-criterion">';
+    html += '<div class="ai-criterion-header"><span class="ai-criterion-label">' + c.label + '</span><span class="ai-criterion-score">' + score + '/' + c.max + '</span></div>';
+    html += '<div class="ai-criterion-bar"><div class="ai-criterion-fill" style="width:' + pctC + '%"></div></div>';
+    if(item.commentaire) html += '<p class="ai-criterion-comment">' + item.commentaire + '</p>';
+    html += '</div>';
+  });
+  html += '</div>';
+
+  // Ideas correctly expressed
+  if(result.ideesCorrectes && result.ideesCorrectes.length) {
+    html += '<div class="ai-section ai-section-good"><h4>Points positifs</h4><ul>';
+    result.ideesCorrectes.forEach(idea => { html += '<li>' + idea + '</li>'; });
+    html += '</ul></div>';
+  }
+
+  // Missing notions
+  if(result.notionsOubliees && result.notionsOubliees.length) {
+    html += '<div class="ai-section ai-section-missing"><h4>Notions oubliées</h4><ul>';
+    result.notionsOubliees.forEach(n => { html += '<li>' + n + '</li>'; });
+    html += '</ul></div>';
+  }
+
+  // Errors
+  if(result.erreurs && result.erreurs.length) {
+    html += '<div class="ai-section ai-section-error"><h4>Erreurs</h4><ul>';
+    result.erreurs.forEach(e => { html += '<li>' + e + '</li>'; });
+    html += '</ul></div>';
+  }
+
+  // Confusions
+  if(result.confusions && result.confusions.length) {
+    html += '<div class="ai-section ai-section-confusion"><h4>Confusions</h4><ul>';
+    result.confusions.forEach(c => { html += '<li>' + c + '</li>'; });
+    html += '</ul></div>';
+  }
+
+  // Advice
+  if(result.conseils && result.conseils.length) {
+    html += '<div class="ai-section ai-section-advice"><h4>Conseils d\'amélioration</h4><ul>';
+    result.conseils.forEach(c => { html += '<li>' + c + '</li>'; });
+    html += '</ul></div>';
+  }
+
+  // Model answer
+  if(result.reponseModele) {
+    html += '<div class="ai-model-answer"><h4>Réponse modèle</h4><div class="answer-code">' + result.reponseModele + '</div></div>';
+  }
+
+  // Revision links
+  if(result.revisionChapitres && result.revisionChapitres.length) {
+    html += '<div class="ai-revision-links"><h4>Sections à revoir</h4>';
+    result.revisionChapitres.forEach(ref => {
+      const found = document.querySelector('[id="' + ref + '"]');
+      const label = found ? found.querySelector('.section-title')?.textContent || ref : ref;
+      html += '<a href="#' + ref + '" class="answer-review">' + label + '</a>';
+    });
+    html += '</div>';
+  }
+
+  html += '</div>';
+  container.innerHTML = html;
+  container.style.display = 'block';
+}
+
+/* ─── AI Settings ─── */
+function initAISettings() {
+  const cfg = window.AIProvider?.getConfig();
+  if(!cfg) return;
+
+  const provider = document.getElementById('aiProvider');
+  const apiUrl = document.getElementById('aiApiUrl');
+  const apiKey = document.getElementById('aiApiKey');
+  const model = document.getElementById('aiModel');
+  const temp = document.getElementById('aiTemperature');
+  const maxTokens = document.getElementById('aiMaxTokens');
+
+  if(provider) provider.value = cfg.provider || 'openai';
+  if(apiUrl) apiUrl.value = cfg.apiUrl || 'https://api.openai.com/v1';
+  if(apiKey) apiKey.value = cfg.apiKey || '';
+  if(model) model.value = cfg.model || 'gpt-4o-mini';
+  if(temp) temp.value = cfg.temperature ?? 0.3;
+  if(maxTokens) maxTokens.value = cfg.maxTokens || 2048;
+
+  const saveBtn = document.getElementById('aiSaveBtn');
+  const testBtn = document.getElementById('aiTestBtn');
+  const status = document.getElementById('aiStatus');
+
+  if(saveBtn) saveBtn.addEventListener('click', () => {
+    window.AIProvider.save({
+      provider: provider?.value || 'openai',
+      apiUrl: apiUrl?.value || 'https://api.openai.com/v1',
+      apiKey: apiKey?.value || '',
+      model: model?.value || 'gpt-4o-mini',
+      temperature: parseFloat(temp?.value || '0.3'),
+      maxTokens: parseInt(maxTokens?.value || '2048')
+    });
+    if(status) { status.textContent = 'Configuration enregistrée'; status.className = 'ai-status ai-status-ok'; }
+    setTimeout(() => { if(status) status.textContent = ''; }, 3000);
+  });
+
+  if(testBtn) testBtn.addEventListener('click', async () => {
+    if(status) { status.textContent = 'Test en cours...'; status.className = 'ai-status'; }
+    window.AIProvider.save({
+      provider: provider?.value || 'openai',
+      apiUrl: apiUrl?.value || 'https://api.openai.com/v1',
+      apiKey: apiKey?.value || '',
+      model: model?.value || 'gpt-4o-mini',
+      temperature: parseFloat(temp?.value || '0.3'),
+      maxTokens: parseInt(maxTokens?.value || '2048')
+    });
+    try {
+      const res = await window.AIProvider.ask([
+        AIProvider.userPrompt('Réponds uniquement par OK si tu reçois ce message.')
+      ], { maxTokens: 10, temperature: 0 });
+      if(status) { status.textContent = 'Connexion réussie !'; status.className = 'ai-status ai-status-ok'; }
+    } catch(e) {
+      if(status) { status.textContent = 'Échec : ' + e.message; status.className = 'ai-status ai-status-error'; }
+    }
+  });
+}
+
+/* ─── QCM AI Correction ─── */
+function addQCMCorrectBtn(q, card) {
+  if(!card || q.type !== 'qcm') return;
+  const existing = card.querySelector('.ai-correct-btn');
+  if(existing) return;
+
+  const aiBtn = document.createElement('button');
+  aiBtn.className = 'reveal-btn ai-correct-btn';
+  aiBtn.textContent = 'Explication détaillée';
+  card.appendChild(aiBtn);
+
+  const aiResult = document.createElement('div');
+  aiResult.className = 'ai-correction';
+  aiResult.id = 'ai-result-qcm-' + q.id;
+  card.appendChild(aiResult);
+
+  aiBtn.addEventListener('click', async () => {
+    if(!window.AIProvider || !AIProvider.isConfigured()) {
+      aiResult.innerHTML = '<div class="ai-error">Configurez d\'abord une clé API dans l\'onglet Configuration IA.</div>';
+      aiResult.style.display = 'block';
+      return;
+    }
+    const ans = state.userAnswers[q.id];
+    const selected = ans?.selected || [];
+    if(!selected.length) {
+      aiResult.innerHTML = '<div class="ai-error">Sélectionnez d\'abord une ou plusieurs réponses.</div>';
+      aiResult.style.display = 'block';
+      return;
+    }
+    aiBtn.disabled = true;
+    aiBtn.textContent = 'Analyse en cours...';
+    aiResult.innerHTML = '<div class="ai-loading">Génération des explications...</div>';
+    aiResult.style.display = 'block';
+    try {
+      const result = await AICorrector.correctQCM(q, selected);
+      renderQCMCorrection(aiResult, result, q);
+    } catch(e) {
+      aiResult.innerHTML = '<div class="ai-error">Erreur : ' + e.message + '</div>';
+    } finally {
+      aiBtn.disabled = false;
+      aiBtn.textContent = 'Explication détaillée';
+    }
+  });
+}
+
+function renderQCMCorrection(container, result, q) {
+  if(!result || result.error) {
+    container.innerHTML = '<div class="ai-error">' + (result?.error || 'Erreur') + '</div>';
+    return;
+  }
+
+  let html = '<div class="ai-correction-content">';
+
+  if(result.explications) {
+    html += '<div class="ai-section ai-section-good"><h4>Analyse des propositions</h4>';
+    result.explications.forEach(ex => {
+      const icon = ex.correcte ? '✓' : '✗';
+      const cls = ex.correcte ? 'qcm-explication-correct' : 'qcm-explication-incorrect';
+      html += '<div class="qcm-explication ' + cls + '">';
+      html += '<div class="qcm-explication-header"><span class="qcm-explication-icon">' + icon + '</span><span>' + ex.texte + '</span></div>';
+      html += '<p>' + ex.explication + '</p></div>';
+    });
+    html += '</div>';
+  }
+
+  if(result.commentaire) {
+    html += '<div class="ai-section ai-section-advice"><h4>Résumé</h4><p>' + result.commentaire + '</p></div>';
+  }
+
+  if(result.conseils && result.conseils.length) {
+    html += '<div class="ai-section ai-section-missing"><h4>Conseils</h4><ul>';
+    result.conseils.forEach(c => { html += '<li>' + c + '</li>'; });
+    html += '</ul></div>';
+  }
+
+  if(result.revisionChapitres && result.revisionChapitres.length) {
+    html += '<div class="ai-revision-links"><h4>Sections à revoir</h4>';
+    result.revisionChapitres.forEach(ref => {
+      const found = document.querySelector('[id="' + ref + '"]');
+      const label = found ? found.querySelector('.section-title')?.textContent || ref : ref;
+      html += '<a href="#' + ref + '" class="answer-review">' + label + '</a>';
+    });
+    html += '</div>';
+  }
+
+  html += '</div>';
+  container.innerHTML = html;
+  container.style.display = 'block';
 }
 
 function updateStats(qId, correct) {
@@ -1047,6 +1344,9 @@ function bindExamEvents() {
     if(e.key === 'ArrowLeft') navigateExam(-1);
     if(e.key === 'ArrowRight') navigateExam(1);
   });
+
+  // AI Settings
+  initAISettings();
 }
 
 // Store answers from exam mode
