@@ -170,6 +170,30 @@ a:hover { color: var(--blue-dark); text-decoration: underline; }
   color: var(--gray-500);
 }
 
+.sidebar-footer {
+  padding: 8px 16px 12px;
+  border-top: 1px solid var(--gray-200);
+  background: var(--white);
+  text-align: center;
+}
+
+.reset-btn {
+  background: none;
+  border: 1px solid var(--gray-200);
+  color: var(--gray-500);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: var(--font);
+}
+
+.reset-btn:hover {
+  border-color: var(--red);
+  color: var(--red);
+}
+
 .progress-bar-track {
   flex: 1;
   height: 4px;

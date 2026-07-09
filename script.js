@@ -161,6 +161,14 @@ if(themeBtn)themeBtn.addEventListener('click',()=>{
   localStorage.setItem('linux-doc-theme',d?'dark':'light');
 });
 
+/* --- RESET DATA --- */
+document.getElementById('resetDataBtn')?.addEventListener('click',()=>{
+  if(confirm('Effacer toutes vos données (réponses, statistiques, préférences) ? Cette action est irréversible.')){
+    ['linux-exam-answers','linux-exam-stats','linux-doc-theme'].forEach(k=>localStorage.removeItem(k));
+    location.reload();
+  }
+});
+
 /* --- BACK TO TOP --- */
 const topBtn=document.getElementById('backToTop');
 window.addEventListener('scroll',()=>topBtn?.classList.toggle('visible',window.scrollY>400));
